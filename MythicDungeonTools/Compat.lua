@@ -243,6 +243,12 @@ do
   end
 end
 
+-- Legion 7.3.5 cannot load addon PNG textures (added in 10.0.7); use TGA tiles instead.
+function MDT.GetCustomMapTilePath(basePath, sublevel, fileSuffix)
+  local ext = MDT.IsLegion and MDT:IsLegion() and ".tga" or ".png"
+  return basePath .. "\\" .. sublevel .. "_" .. fileSuffix .. ext
+end
+
 if C_AddOns then return end
 
 C_AddOns = {}

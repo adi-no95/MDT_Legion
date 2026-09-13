@@ -2334,10 +2334,12 @@ function MDT:UpdateMap(ignoreSetSelection, ignoreReloadPullButtons, ignoreUpdate
     for i = 1, 10 do
       for j = 1, 15 do
         local fileSuffix = (i - 1) * 15 + j
-        local texName = textureInfo.customTextures..'\\'..sublevel..'_'..fileSuffix..".png"
+        local texName = MDT.GetCustomMapTilePath(textureInfo.customTextures, sublevel, fileSuffix)
         local tile = frame["largeMapPanelTile"..i..j]
-        tile:SetTexture(texName)
-        tile:Show()
+        if tile then
+          tile:SetTexture(texName)
+          tile:Show()
+        end
       end
     end
   end
