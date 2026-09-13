@@ -2,6 +2,11 @@ local addonName, MDT = ...
 local AceGUI = LibStub("AceGUI-3.0")
 local L
 
+function MDT:IsLegion()
+  local gameVersion = select(4, GetBuildInfo())
+  return gameVersion >= 70000 and gameVersion < 80000
+end
+
 function MDT:IsRetail()
   local gameVersion = select(4, GetBuildInfo())
   return gameVersion >= 110000
@@ -13,14 +18,14 @@ function MDT:IsMop()
 end
 
 function MDT:IsCompatibleVersion()
-  return MDT:IsMop() or MDT:IsRetail()
+  return MDT:IsLegion()
 end
 
 function MDT:ShowFallbackWindow()
   if not MDT.fallbackFrame then
     L = MDT.L
     local gameVersionString = GetBuildInfo()
-    local addonVersionString = C_AddOns and C_AddOns.GetAddOnMetadata(addonName, "Version") or GetAddOnMetadata(addonName, "Version")
+    local addonVersionString = C_AddOns.GetAddOnMetadata(addonName, "Version")
     local labelText = L["incompatibleVersionError"].."\n\nGame: "..gameVersionString.."\nMDT: "..addonVersionString
     MDT.fallbackFrame = AceGUI:Create("Frame")
     _G["MDTFallbackFrame"] = MDT.fallbackFrame.frame

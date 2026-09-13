@@ -24,8 +24,8 @@ function MDT:Maximize()
     f.blackoutFrame:SetAllPoints(UIParent)
   end
   f.blackoutFrame:Show()
-  f.topPanel:SetMouseClickEnabled(false)
-  f.bottomPanel:SetMouseClickEnabled(false)
+  MDT.SetMouseClickEnabled(f.topPanel, false)
+  MDT.SetMouseClickEnabled(f.bottomPanel, false)
   local newSizex, newSizey, scale, isNarrow = MDT:GetFullScreenSizes()
   db.scale = scale
   f:ClearAllPoints()
@@ -71,8 +71,8 @@ function MDT:Minimize()
   local oldSizeX = f.scrollFrame:GetWidth()
   local oldSizeY = f.scrollFrame:GetHeight()
   if f.blackoutFrame then f.blackoutFrame:Hide() end
-  f.topPanel:SetMouseClickEnabled(true)
-  f.bottomPanel:SetMouseClickEnabled(true)
+  MDT.SetMouseClickEnabled(f.topPanel, true)
+  MDT.SetMouseClickEnabled(f.bottomPanel, true)
   db.scale = db.nonFullscreenScale
   local newSizex = sizex * db.scale
   local newSizey = sizey * db.scale

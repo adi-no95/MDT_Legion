@@ -188,7 +188,7 @@ local defaultSavedVars = {
       customPaletteValues = {},
       numberCustomColors = 12,
     },
-    currentDungeonIdx = MDT:IsMop() and 130 or 123, -- set this one every new season
+    currentDungeonIdx = 3, -- Court of Stars
     latestDungeonSeen = 0,
     selectedDungeonList = 1,
     knownAffixWeeks = {},
@@ -238,8 +238,8 @@ do
         MDT.DataCollection:Init()
         MDT.DataCollection:InitHealthTrack()
       end
-      --compartment
-      if not db.minimap.compartmentHide then
+      --compartment (retail only)
+      if minimapIcon.AddButtonToCompartment and not db.minimap.compartmentHide then
         minimapIcon:AddButtonToCompartment("MythicDungeonTools")
       end
       --fix db corruption
@@ -293,16 +293,16 @@ end
 --https://www.wowhead.com/affixes
 --lvl 4 affix, lvl 7 affix, tyrannical/fortified affix
 local affixWeeks = {
-  [1] = { 9, 148 },
-  [2] = { 10 },
-  [3] = { 9 },
-  [4] = { 10 },
-  [5] = { 9 },
-  [6] = { 10 },
-  [7] = { 9 },
-  [8] = { 10 },
-  [9] = { 9 },
-  [10] = { 10 },
+  [1] = { 7, 9 },
+  [2] = { 10, 6 },
+  [3] = { 9, 11 },
+  [4] = { 10, 13 },
+  [5] = { 9, 12 },
+  [6] = { 10, 14 },
+  [7] = { 9, 7 },
+  [8] = { 10, 6 },
+  [9] = { 9, 11 },
+  [10] = { 10, 13 },
 }
 
 MDT.mapInfo = {}
@@ -436,17 +436,11 @@ function MDT:CreateMenu()
   self.main_frame.closeButton:SetSize(24, 24)
 
   --Maximize Button
-  self.main_frame.maximizeButton = CreateFrame("Button", "MDTMaximizeButton", self.main_frame,
-    "MaximizeMinimizeButtonFrameTemplate")
-  self.main_frame.maximizeButton:ClearAllPoints()
-  ---@diagnostic disable-next-line: param-type-mismatch
-  self.main_frame.maximizeButton:SetPoint("RIGHT", self.main_frame.closeButton, "LEFT", 0, 0)
-  self.main_frame.maximizeButton:SetFrameLevel(4)
+  self.main_frame.maximizeButton = MDT:CreateMaximizeButton(self.main_frame, self.main_frame.closeButton)
   db.maximized = db.maximized or false
   if not db.maximized then self.main_frame.maximizeButton:Minimize() end
   self.main_frame.maximizeButton:SetOnMaximizedCallback(self.Maximize)
   self.main_frame.maximizeButton:SetOnMinimizedCallback(self.Minimize)
-  self.main_frame.maximizeButton:SetSize(24, 24)
 
   --return to live preset
   self.main_frame.liveReturnButton = CreateFrame("Button", "MDTLiveReturnButton", self.main_frame, "UIPanelCloseButton")
@@ -1187,7 +1181,7 @@ function MDT:MakeSidePanel(frame)
   local function makeAffixString(week, affixes, longText)
     local ret
     local sep = ""
-    if not MDT:IsRetail() then return "" end
+    if not MDT:IsLegion() then return "" end
     for _, affixID in ipairs(affixes) do
       local name, _, filedataid = C_ChallengeMode.GetAffixInfo(affixID)
       name = name or L["Unknown"]
@@ -1322,7 +1316,7 @@ function MDT:MakeSidePanel(frame)
   frame.sidePanel.DifficultySlider:SetCallback("OnLeave", function()
     GameTooltip:Hide()
   end)
-  if MDT:IsRetail() then
+  if MDT:IsLegion() then
     frame.sidePanel.WidgetGroup:AddChild(frame.sidePanel.DifficultySlider)
   end
   frame.sidePanel.middleLine = AceGUI:Create("Heading")
@@ -1330,8 +1324,18 @@ function MDT:MakeSidePanel(frame)
   frame.sidePanel.WidgetGroup:AddChild(frame.sidePanel.middleLine)
   frame.sidePanel.WidgetGroup.frame:SetFrameLevel(3)
 
-  local progressBarTemplate = MDT:IsMop() and "TooltipProgressBarTemplate" or "ScenarioProgressBarTemplate"
-  frame.sidePanel.ProgressBar = CreateFrame("Frame", nil, frame.sidePanel, progressBarTemplate)
+  local progressBar = CreateFrame("Frame", nil, frame.sidePanel, "ScenarioProgressBarTemplate")
+  if not progressBar.Bar then
+    progressBar = CreateFrame("Frame", nil, frame.sidePanel)
+    progressBar:SetSize(200, 20)
+    progressBar.Bar = CreateFrame("StatusBar", nil, progressBar)
+    progressBar.Bar:SetAllPoints(progressBar)
+    progressBar.Bar:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
+    progressBar.Bar:SetMinMaxValues(0, 100)
+    progressBar.Bar.Label = progressBar.Bar:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+    progressBar.Bar.Label:SetPoint("CENTER")
+  end
+  frame.sidePanel.ProgressBar = progressBar
   frame.sidePanel.ProgressBar:Show()
   frame.sidePanel.ProgressBar:ClearAllPoints()
   frame.sidePanel.ProgressBar:SetPoint("TOP", frame.sidePanel.WidgetGroup.frame, "BOTTOM", -10, 5)
@@ -1391,7 +1395,9 @@ function MDT:Progressbar_SetValue(self, totalCurrent, totalMax)
     self.Bar:SetStatusBarColor(0.26, 0.42, 1)
   end
   self.Bar:SetValue(percent)
-  self.Bar.Label:SetText(MDT:FormatEnemyForces(totalCurrent, totalMax, true))
+  if self.Bar.Label then
+    self.Bar.Label:SetText(MDT:FormatEnemyForces(totalCurrent, totalMax, true))
+  end
   self.AnimValue = percent
 end
 
@@ -3107,7 +3113,7 @@ function MDT:MakeSettingsFrame(frame)
       minimapIcon:RemoveButtonFromCompartment("MythicDungeonTools")
     end
   end)
-  if MDT:IsRetail() then
+  if MDT:IsRetail() and minimapIcon.AddButtonToCompartment then
     frame.settingsFrame:AddChild(frame.compartmentCheckbox)
   end
 

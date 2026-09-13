@@ -1,7 +1,7 @@
-## Interface: 110107, 110200, 50500
+## Interface: 70300
 ## Title: MDT Legacy
 ## Author: Nnoggie
-## Version: 1.1.6
+## Version: 1.1.6-legion
 ## Notes: MDT Plugin containing dungeons from previous expansions
 ## Notes-deDE: MDT-Plugin mit Dungeons aus vorherigen Erweiterungen
 ## Notes-esES: Complemento de MDT que contiene mazmorras de expansiones anteriores
@@ -22,7 +22,4 @@ locale.lua
 versionCheck.lua
 buildCheck.lua
 core.lua
-Legion\load_legion.xml [AllowLoadGameType mainline]
-BattleForAzeroth\load_bfa.xml [AllowLoadGameType mainline]
-Shadowlands\load_shadowlands.xml [AllowLoadGameType mainline]
-Dragonflight\load_dragonflight.xml [AllowLoadGameType mainline]
+Legion\load_legion.xml

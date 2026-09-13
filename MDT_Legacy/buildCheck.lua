@@ -1,6 +1,11 @@
 ---@class MDT_Legacy
 local addon = select(2, ...)
 
+function addon:IsLegion()
+  local gameVersion = select(4, GetBuildInfo())
+  return gameVersion >= 70000 and gameVersion < 80000
+end
+
 function addon:IsRetail()
   local gameVersion = select(4, GetBuildInfo())
   return gameVersion >= 110000

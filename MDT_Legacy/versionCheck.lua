@@ -3,7 +3,7 @@ local addon = select(2, ...)
 
 ---@return boolean
 function addon:GenericVersionCheck(addonName, oldestSupported)
-  local currentVersionString = C_AddOns.GetAddOnMetadata(addonName, "Version")
+  local currentVersionString = GetAddOnMetadata(addonName, "Version")
   return addon:IsSemverSameOrHigher(currentVersionString, oldestSupported)
 end
 
