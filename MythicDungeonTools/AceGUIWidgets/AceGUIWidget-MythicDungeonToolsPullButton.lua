@@ -3,8 +3,7 @@ local Type, Version = "MDTPullButton", 1
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 local MDT = MDT
 local L = MDT.L
-local tinsert, SetPortraitToTexture, SetPortraitTextureFromCreatureDisplayID, MouseIsOver, next = table.insert,
-    SetPortraitToTexture, SetPortraitTextureFromCreatureDisplayID, MouseIsOver, next
+local tinsert, MouseIsOver, next = table.insert, MouseIsOver, next
 
 local width, height = 248, 32
 local maxPortraitCount = 7
@@ -870,11 +869,7 @@ local methods = {
       idx = idx + 1
       if not self.enemyPortraits[idx] then break end
       self.enemyPortraits[idx].enemyData = data
-      if data.displayId then
-        SetPortraitTextureFromCreatureDisplayID(self.enemyPortraits[idx], data.displayId)
-      else
-        SetPortraitToTexture(self.enemyPortraits[idx], "Interface\\Icons\\achievement_boss_hellfire_mannorothreanimated")
-      end
+      MDT.SetEnemyPortrait(self.enemyPortraits[idx], data)
       self.enemyPortraits[idx]:Show()
       self.enemyPortraits[idx].overlay:Show()
       self.enemyPortraits[idx].fontString:SetText("x"..data.quantity)

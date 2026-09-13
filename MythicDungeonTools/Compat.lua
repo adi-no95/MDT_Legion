@@ -173,19 +173,175 @@ function MDT.EnsureQuestPinFrame(note)
 	return note.NormalTexture, note.HighlightTexture, note.Display.Icon, note.PushedTexture
 end
 
+-- On 7.3.5 SetPortraitTexture takes a creature display ID as well as a unit token;
+-- that is what the default world map uses to draw its Encounter Journal boss icons.
 if not SetPortraitTextureFromCreatureDisplayID then
 	function SetPortraitTextureFromCreatureDisplayID(texture, creatureDisplayID)
 		if not texture then
 			return
 		end
-		creatureDisplayID = tonumber(creatureDisplayID) or 39490
-		if SetPortraitToTexture then
-			SetPortraitToTexture(texture, "Interface\\Icons\\INV_Misc_Head_Dragon_01")
-		else
-			texture:SetTexture("Interface\\Icons\\INV_Misc_Head_Dragon_01")
+		SetPortraitTexture(texture, tonumber(creatureDisplayID) or 39490)
+	end
+end
+
+local DEFAULT_DISPLAY_ID = 39490
+local QUESTION_MARK = "Interface\\Icons\\INV_Misc_QuestionMark"
+local QUESTION_MARK_FILE_ID = 134400
+
+-- Used when a display id cannot be resolved by the client. Only vanilla era icons,
+-- they are guaranteed to exist on 7.3.5.
+MDT.creatureTypeIcons = {
+	["Humanoid"] = "Interface\\Icons\\INV_Misc_Head_Human_01",
+	["Beast"] = "Interface\\Icons\\Ability_Hunter_Pet_Bear",
+	["Undead"] = "Interface\\Icons\\INV_Misc_Bone_HumanSkull_01",
+	["Demon"] = "Interface\\Icons\\Spell_Shadow_SummonInfernal",
+	["Elemental"] = "Interface\\Icons\\Spell_Fire_Elemental_Totem",
+	["Aberration"] = "Interface\\Icons\\Spell_Shadow_ShadowWordPain",
+	["Mechanical"] = "Interface\\Icons\\Trade_Engineering",
+	["Giant"] = "Interface\\Icons\\INV_Misc_MonsterHorn_01",
+	["Dragonkin"] = "Interface\\Icons\\INV_Misc_Head_Dragon_01",
+	["Critter"] = "Interface\\Icons\\INV_Misc_MonsterClaw_04",
+}
+
+-- npcId -> icon path or spellId, for hand tuning individual enemies
+MDT.enemyIconOverrides = {}
+
+local fallbackIconCache = {}
+-- texture -> { data, icon }, for textures whose creature portrait has not loaded yet
+local pendingPortraits = {}
+
+local npcIdIndex
+local function getEnemyDataByNpcId(npcId)
+	if not npcId then
+		return
+	end
+	if not npcIdIndex or not npcIdIndex[npcId] then
+		npcIdIndex = {}
+		for _, enemies in pairs(MDT.dungeonEnemies or {}) do
+			for _, enemy in pairs(enemies) do
+				if enemy.id then
+					npcIdIndex[enemy.id] = enemy
+				end
+			end
+		end
+	end
+	return npcIdIndex[npcId]
+end
+
+-- Picks the lowest spell id that resolves to a real icon on this client. The spells
+-- table is keyed, so it has to be sorted to stay stable across reloads.
+local function getSpellIcon(spells)
+	if type(spells) ~= "table" then
+		return
+	end
+	local spellIds = {}
+	for spellId in pairs(spells) do
+		if tonumber(spellId) then
+			table.insert(spellIds, tonumber(spellId))
+		end
+	end
+	table.sort(spellIds)
+	for _, spellId in pairs(spellIds) do
+		local icon = C_Spell.GetSpellTexture(spellId)
+		if icon and icon ~= QUESTION_MARK_FILE_ID and icon ~= QUESTION_MARK then
+			return icon
 		end
 	end
 end
+
+-- Resolves an icon for an enemy that has no usable creature portrait.
+function MDT.GetEnemyFallbackIcon(data)
+	if not data then
+		return QUESTION_MARK
+	end
+	local npcId = data.id or data.npcId
+	local cached = fallbackIconCache[npcId or false]
+	if cached then
+		return cached
+	end
+
+	local icon
+	local override = npcId and MDT.enemyIconOverrides[npcId]
+	if type(override) == "number" then
+		icon = C_Spell.GetSpellTexture(override)
+	elseif override then
+		icon = override
+	end
+
+	-- pull button entries do not carry the spell list, look the enemy up instead
+	local spells = data.spells
+	if not spells and npcId then
+		local enemy = getEnemyDataByNpcId(npcId)
+		spells = enemy and enemy.spells
+	end
+	icon = icon or getSpellIcon(spells)
+	icon = icon or MDT.creatureTypeIcons[data.creatureType] or QUESTION_MARK
+
+	if npcId then
+		fallbackIconCache[npcId] = icon
+	end
+	return icon
+end
+
+local function setEnemyIcon(texture, icon)
+	if SetPortraitToTexture then
+		SetPortraitToTexture(texture, icon)
+	else
+		texture:SetTexture(icon)
+	end
+end
+
+-- Tries the creature portrait, falling back to an icon if it is not available yet.
+-- Returns the fallback that was applied, or nil once the real portrait is showing.
+local function applyEnemyPortrait(texture, data)
+	-- clear first, otherwise a leftover portrait from a pooled frame looks like a success
+	texture:SetTexture(nil)
+	SetPortraitTextureFromCreatureDisplayID(texture, data.displayId or DEFAULT_DISPLAY_ID)
+	if texture:GetTexture() then
+		return
+	end
+	setEnemyIcon(texture, MDT.GetEnemyFallbackIcon(data))
+	return texture:GetTexture()
+end
+
+---Sets the creature portrait of an enemy on a texture.
+---On 7.3.5 SetPortraitTexture accepts a creature display id, the same way the default
+---world map draws its boss icons. Portraits load asynchronously, so anything that does
+---not resolve right away gets a fallback icon and is retried on UNIT_PORTRAIT_UPDATE.
+function MDT.SetEnemyPortrait(texture, data)
+	if not texture or not data then
+		return
+	end
+	pendingPortraits[texture] = nil
+	if data.iconTexture then
+		setEnemyIcon(texture, data.iconTexture)
+		return
+	end
+	local fallback = applyEnemyPortrait(texture, data)
+	if fallback then
+		pendingPortraits[texture] = { data = data, icon = fallback }
+	end
+end
+
+-- Mirrors EncounterJournal_UpdateMapButtonPortraits: retry the portraits that were not
+-- cached yet. Keyed by texture, so the list stays bounded by the frame pool size.
+local portraitFrame = CreateFrame("Frame")
+portraitFrame:RegisterEvent("UNIT_PORTRAIT_UPDATE")
+portraitFrame:SetScript("OnEvent", function()
+	for texture, pending in pairs(pendingPortraits) do
+		if texture:GetTexture() ~= pending.icon then
+			-- something else took this texture over in the meantime, leave it alone
+			pendingPortraits[texture] = nil
+		else
+			local fallback = applyEnemyPortrait(texture, pending.data)
+			if fallback then
+				pending.icon = fallback
+			else
+				pendingPortraits[texture] = nil
+			end
+		end
+	end
+end)
 
 if not WrapTextInColor then
 	function WrapTextInColor(text, color)

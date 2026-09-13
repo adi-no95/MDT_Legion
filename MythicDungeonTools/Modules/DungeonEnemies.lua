@@ -652,15 +652,9 @@ function MDTDungeonEnemyMixin:SetUp(data, clone)
   setUpMouseHandlers(self)
   tinsert(blips, self)
   if db.enemyStyle == 2 then
-    MDT.HidePortraitModel(self.texture_Portrait)
     self.texture_Portrait:SetTexture("Interface\\Worldmap\\WorldMapPartyIcon")
   else
-    if data.iconTexture then
-      MDT.HidePortraitModel(self.texture_Portrait)
-      SetPortraitToTexture(self.texture_Portrait, data.iconTexture);
-    else
-      SetPortraitTextureFromCreatureDisplayID(self.texture_Portrait, data.displayId or 39490)
-    end
+    MDT.SetEnemyPortrait(self.texture_Portrait, data)
   end
   self.texture_Indicator:Hide()
   local assignments = MDT:GetCurrentPreset().value.enemyAssignments
