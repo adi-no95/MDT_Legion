@@ -10,7 +10,7 @@ MDT.mapInfo[dungeonIndex] = {
       verticalPan = 36.757613963117,
     },
   },
-  teleportId = 393766,
+  iconId = 1417424,
   shortName = L["courtOfStarsShortName"],
   englishName = "Court of Stars",
   mapID = 210

@@ -1091,19 +1091,8 @@ function MDT:DrawNote(x, y, text, objectIndex)
   local idx = note.noteIdx % 25
   if idx == 0 then idx = 1 end
 
-  --for some reason the templates are differing between classic and retail
-  local texture, highlight, number, pushed
-  if MDT:IsMop() then
-    texture = note.Texture
-    highlight = note.Highlight
-    number = note.Number
-    pushed = note.PushedTexture
-  else
-    texture = note.NormalTexture
-    highlight = note.HighlightTexture
-    number = note.Display.Icon
-    pushed = note.PushedTexture
-  end
+  local texture, highlight, number, pushed = MDT.EnsureQuestPinFrame(note)
+  if not texture or not highlight or not number or not pushed then return end
   texture:SetSize(15 * scale, 15 * scale)
   texture:SetTexture("Interface/WorldMap/UI-QuestPoi-NumberIcons")
   texture:SetTexCoord(0.500, 0.625, 0.375, 0.5)

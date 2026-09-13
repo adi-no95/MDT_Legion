@@ -111,6 +111,7 @@ local createPlayerAssignmentContextMenu = function(frame)
 end
 
 local function POI_SetOptions(frame, type, poi)
+  MDT.EnsurePinFrameTextures(frame)
   frame.poi = nil
   frame.defaultHidden = nil
   frame:SetMovable(false)

@@ -31,6 +31,7 @@ function MDT.CreateFramePool(frametype, parent, template)
         end
       end
       if frame then
+        MDT.EnsurePinFrameTextures(frame)
         table.insert(self.active, frame)
       end
       return frame

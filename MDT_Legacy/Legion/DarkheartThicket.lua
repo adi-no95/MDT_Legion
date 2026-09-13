@@ -12,7 +12,7 @@ MDT.mapInfo[dungeonIndex] = {
       verticalPan = 69.727395812053,
     },
   },
-  teleportId = 424163,
+  iconId = 1417425,
   shortName = L["darkheartThicketShortName"],
   englishName = "Darkheart Thicket",
   mapID = 198

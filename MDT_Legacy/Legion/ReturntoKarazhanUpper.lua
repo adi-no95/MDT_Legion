@@ -6,7 +6,7 @@ MDT.dungeonList[dungeonIndex] = L["Return to Karazhan Upper"]
 MDT.dungeonTotalCount[dungeonIndex] = { normal = 169, teeming = 202, teemingEnabled = true }
 
 MDT.mapInfo[dungeonIndex] = {
-  teleportId = 373262,
+  iconId = 1530372,
   shortName = L["karaUpperShortName"],
   englishName = "Return to Karazhan Upper",
   mapID = 234
