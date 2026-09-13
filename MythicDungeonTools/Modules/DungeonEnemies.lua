@@ -81,6 +81,7 @@ function MDT:HideAllBlipLabels()
 end
 
 function MDT:SetUpModifiers(frame)
+  if not frame then return end
   if MDT:GetDB().devMode then return end
   local ONUPDATE_INTERVAL = 0.1
   local timeSinceLastUpdate = 0
@@ -710,6 +711,7 @@ function MDT:DungeonEnemies_UpdateEnemiesAsync()
       --check sublevel
       if clone.sublevel == currentSublevel or (not clone.sublevel) then
         local blip = MDT.dungeonEnemies_framePool:Acquire()
+        if not blip then return end
         blip.enemyIdx = enemyIdx
         blip.cloneIdx = cloneIdx
         blip:SetUp(data, clone)
@@ -901,7 +903,11 @@ end
 ---DungeonEnemies_GetPullColor
 ---Returns the custom color for a pull
 function MDT:DungeonEnemies_GetPullColor(pull, pulls)
-  pulls = pulls or preset.value.pulls
+  pulls = pulls or (preset and preset.value and preset.value.pulls)
+  if not pulls or not pulls[pull] then
+    local r, g, b = MDT:HexToRGB(db.defaultColor or "ffffff")
+    return r or 1, g or 1, b or 1
+  end
   local r, g, b = MDT:HexToRGB(pulls[pull]["color"])
   if not r then
     r, g, b = MDT:HexToRGB(db.defaultColor)

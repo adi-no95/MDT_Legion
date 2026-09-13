@@ -1211,9 +1211,12 @@ end
 function MDT:POI_UpdateAll()
   twipe(points)
   db = MDT:GetDB()
-  MDT.GetFramePool("MapLinkPinTemplate"):ReleaseAll()
-  MDT.GetFramePool("DeathReleasePinTemplate"):ReleaseAll()
-  MDT.GetFramePool("VignettePinTemplate"):ReleaseAll()
+  local mapLinkPool = MDT.GetFramePool("MapLinkPinTemplate")
+  local deathReleasePool = MDT.GetFramePool("DeathReleasePinTemplate")
+  local vignettePool = MDT.GetFramePool("VignettePinTemplate")
+  if mapLinkPool then mapLinkPool:ReleaseAll() end
+  if deathReleasePool then deathReleasePool:ReleaseAll() end
+  if vignettePool then vignettePool:ReleaseAll() end
   if not MDT.mapPOIs[db.currentDungeonIdx] then return end
   local currentSublevel = MDT:GetCurrentSubLevel()
   local pois = MDT.mapPOIs[db.currentDungeonIdx][currentSublevel]
@@ -1222,7 +1225,10 @@ function MDT:POI_UpdateAll()
   local scale = MDT:GetScale()
   local week = MDT:GetEffectivePresetWeek(preset)
   for poiIdx, poi in pairs(pois) do
-    local poiFrame = MDT.GetFramePool(poi.template):Acquire()
+    local poiPool = MDT.GetFramePool(poi.template)
+    if poiPool then
+    local poiFrame = poiPool:Acquire()
+    if poiFrame then
     if poiFrame.playerAssignmentString then poiFrame.playerAssignmentString:Hide() end
     poiFrame.poiIdx = poiIdx
     POI_SetOptions(poiFrame, poi.type, poi)
@@ -1232,6 +1238,8 @@ function MDT:POI_UpdateAll()
     poiFrame:SetPoint("CENTER", MDT.main_frame.mapPanelTile1, "TOPLEFT", poi.x * scale, poi.y * scale)
     if not poiFrame.defaultHidden or db.devMode then poiFrame:Show() end
     tinsert(points, poiFrame)
+    end
+    end
   end
 end
 

@@ -63,6 +63,7 @@ local function createHandler(config)
   end
 
   function handler:CancelAsync(name)
+    if not name then return end
     self.tasks[name] = nil
   end
 

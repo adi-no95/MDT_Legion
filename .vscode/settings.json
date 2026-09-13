@@ -1,0 +1,45 @@
+{
+  "Lua.runtime.version": "Lua 5.1",
+  "Lua.runtime.builtin": {
+    "basic": "disable",
+    "debug": "disable",
+    "io": "disable",
+    "math": "disable",
+    "os": "disable",
+    "package": "disable",
+    "string": "disable",
+    "table": "disable",
+    "utf8": "disable"
+  },
+  "Lua.workspace.library": [
+    "c:\\Users\\szeke\\.cursor\\extensions\\ketho.wow-api-0.20.7\\Annotations\\Core"
+  ],
+  "Lua.diagnostics.globals": [
+    "WorldMapFrame",
+    "SlashCmdList",
+    "MouseIsOver",
+    "ReloadUI",
+    "UISpecialFrames",
+    "DEFAULT_CHAT_FRAME",
+    "ChatEdit_ActivateChat",
+    "ChatEdit_OnEnterPressed",
+    "ChatEdit_ChooseBoxForSend",
+    "DrawLine",
+    "ICON_LIST",
+    "WrapTextInColor",
+    "CreateTexturePool",
+    "GameTooltip_SetTitle",
+    "UIDropDownMenu_Initialize",
+    "ToggleDropDownMenu",
+    "UIDropDownMenu_AddButton",
+    "UIDropDownMenu_CreateInfo",
+    "CloseDropDownMenus",
+    "LOCALIZED_CLASS_NAMES_MALE",
+    "CLOSE",
+    "FONT_COLOR_CODE_CLOSE",
+    "SetDesaturation",
+    "ColorPickerFrame",
+    "OKAY",
+    "ACCEPT"
+  ]
+}

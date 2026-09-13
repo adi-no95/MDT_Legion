@@ -7,10 +7,22 @@ local tinsert, slen = table.insert, string.len
 
 local caughtErrors = {}
 
+local function ensureCopyHelper()
+  if not MDT.copyHelper or not MDT.copyHelper.SmartShow then
+    MDT:MakeCopyHelper(UIParent)
+  end
+  return MDT.copyHelper
+end
+
 local function getDiagnostics()
-  local presetExport = MDT:TableToString(MDT:GetCurrentPreset(), true, 5)
+  local presetExport = "(unavailable)"
+  local ok, preset = pcall(function() return MDT:GetCurrentPreset() end)
+  if ok and preset then
+    ok, presetExport = pcall(MDT.TableToString, MDT, preset, true, 5)
+    if not ok then presetExport = "(failed to export preset)" end
+  end
   ---@diagnostic disable-next-line: redundant-parameter
-  local addonVersion = C_AddOns.GetAddOnMetadata(AddonName, "Version")
+  local addonVersion = C_AddOns.GetAddOnMetadata(AddonName, "Version") or "unknown"
   local locale = GetLocale()
   local dateString = date("%d/%m/%y %H:%M:%S")
   local gameVersion = select(4, GetBuildInfo())
@@ -24,51 +36,84 @@ local function getDiagnostics()
     [5] = "China",
     [72] = "PTR"
   }
-  local region = regions[regionId]
+  local region = regions[regionId] or tostring(regionId or "unknown")
   local combatState = InCombatLockdown() and "In combat" or "Out of combat"
-  local mapID = C_Map.GetBestMapForUnit("player");
-  local zoneInfo = format("Zone: %s (%d)", C_Map.GetMapInfo(C_Map.GetMapInfo(mapID or 0).parentMapID).name, mapID)
+  local mapID = C_Map.GetBestMapForUnit("player")
+  local mapInfo = mapID and C_Map.GetMapInfo(mapID)
+  local zoneName = mapInfo and mapInfo.name or GetRealZoneText() or "Unknown"
+  local zoneInfo = format("Zone: %s (%s)", zoneName, tostring(mapID or 0))
   return {
     presetExport = presetExport,
     addonVersion = addonVersion,
     locale = locale,
     dateString = dateString,
     gameVersion = gameVersion,
-    name = name,
-    realm = realm,
+    name = name or "unknown",
+    realm = realm or "unknown",
     region = region,
     combatState = combatState,
     zoneInfo = zoneInfo
   }
 end
 
+local function buildErrorBoxText()
+  local errorBoxText = ""
+  for _, error in ipairs(caughtErrors) do
+    errorBoxText = errorBoxText..error.count.."x: "..error.message.."\n"
+  end
+  local diagnostics = getDiagnostics()
+  errorBoxText = errorBoxText.."\n"..diagnostics.dateString.."\nMDT: "..diagnostics.addonVersion.."\nClient: "..diagnostics.gameVersion.." "..diagnostics.locale.."\nCharacter: "..diagnostics.name.."-"..diagnostics.realm.." ("..diagnostics.region..")"
+  errorBoxText = errorBoxText.."\n"..diagnostics.combatState.."\n"..diagnostics.zoneInfo.."\n"
+  errorBoxText = errorBoxText.."\nRoute:\n"..diagnostics.presetExport
+  errorBoxText = errorBoxText.."\nStacktraces\n\n"
+  for _, error in ipairs(caughtErrors) do
+    errorBoxText = errorBoxText..(error.stackTrace or "(no stack trace)").."\n"
+  end
+  return errorBoxText
+end
+
 local hasShown = false
+
+local function printErrorsToChat(errorBoxText)
+  print("|cFFFF0000MDT Error:|r")
+  for line in errorBoxText:gmatch("[^\n]+") do
+    print(line)
+  end
+end
 
 function MDT:DisplayErrors(force)
   if not force and hasShown then return end
-  hasShown = true
   if #caughtErrors == 0 then return end
   if MDT.initSpinner then
     MDT.initSpinner:Hide()
     MDT.initSpinner.Anim:Stop()
   end
+  ensureCopyHelper()
+
+  local errorBoxText = buildErrorBoxText()
 
   local function startCopyAction(editBox, copyButton, text)
     editBox:HighlightText(0, slen(text))
     editBox:SetFocus()
     copyButton:SetDisabled(true)
-    MDT.copyHelper:SmartShow(MDT.errorFrame.frame, 0, 0)
+    local copyHelper = ensureCopyHelper()
+    if copyHelper then
+      copyHelper:SmartShow(MDT.errorFrame.frame, 0, 0)
+    end
   end
 
   local function stopCopyAction(copyButton)
     copyButton:SetDisabled(false)
-    MDT.copyHelper:SmartHide()
+    local copyHelper = ensureCopyHelper()
+    if copyHelper then
+      copyHelper:SmartHide()
+    end
   end
 
-  local errorBoxText = ""
-
   if not MDT.errorFrame then
+    local buildOk, buildErr = pcall(function()
     MDT.errorFrame = AceGUI:Create("Frame")
+    MDT.errorFrame:Hide()
     _G["MDTErrorFrame"] = MDT.errorFrame.frame
     tinsert(UISpecialFrames, "MDTErrorFrame")
     local errorFrame = MDT.errorFrame
@@ -77,7 +122,9 @@ function MDT:DisplayErrors(force)
     errorFrame:SetHeight(600)
     errorFrame:EnableResize(false)
     errorFrame:SetLayout("Flow")
-    errorFrame:SetCallback("OnClose", function(widget) end)
+    errorFrame:SetCallback("OnClose", function(widget)
+      widget:Hide()
+    end)
     errorFrame:SetTitle(L["MDT Error"])
     errorFrame.label = AceGUI:Create("Label")
     errorFrame.label:SetWidth(800)
@@ -102,11 +149,13 @@ function MDT:DisplayErrors(force)
         stopCopyAction(copyButton)
       end);
       editBox.editbox:SetScript('OnKeyUp', function(_, key)
-        if (MDT.copyHelper:WasControlKeyDown() and key == 'C') then
-          MDT.copyHelper:SmartFadeOut()
+        local copyHelper = ensureCopyHelper()
+        if not copyHelper then return end
+        if (copyHelper:WasControlKeyDown() and key == 'C') then
+          copyHelper:SmartFadeOut()
           editBox:ClearFocus();
         else
-          MDT.copyHelper:SmartHide()
+          copyHelper:SmartHide()
         end
       end);
       errorFrame[dest.name.."CopyButton"] = AceGUI:Create("Button")
@@ -134,11 +183,13 @@ function MDT:DisplayErrors(force)
       stopCopyAction(errorBoxCopyButton)
     end);
     errorBox.editBox:SetScript('OnKeyUp', function(_, key)
-      if (MDT.copyHelper:WasControlKeyDown() and key == 'C') then
-        MDT.copyHelper:SmartFadeOut()
+      local copyHelper = ensureCopyHelper()
+      if not copyHelper then return end
+      if (copyHelper:WasControlKeyDown() and key == 'C') then
+        copyHelper:SmartFadeOut()
         errorBox:ClearFocus();
       else
-        MDT.copyHelper:SmartHide()
+        copyHelper:SmartHide()
       end
     end);
 
@@ -181,25 +232,33 @@ function MDT:DisplayErrors(force)
       end)
 
       local externalButtonGroup = MDT.main_frame.externalButtonGroup
-      externalButtonGroup:AddChild(errorButton)
-      MDT:FixAceGUIShowHide(externalButtonGroup, MDT.main_frame)
+      if externalButtonGroup then
+        externalButtonGroup:AddChild(errorButton)
+        MDT:FixAceGUIShowHide(externalButtonGroup, MDT.main_frame)
+      end
+    end
+    end)
+    if not buildOk then
+      if MDT.errorFrame then
+        MDT.errorFrame:Hide()
+        AceGUI:Release(MDT.errorFrame)
+        MDT.errorFrame = nil
+      end
+      printErrorsToChat(errorBoxText)
+      print("|cFFFF0000MDT failed to open error window:|r "..tostring(buildErr))
+      hasShown = true
+      return
     end
   end
 
-  for _, error in ipairs(caughtErrors) do
-    errorBoxText = errorBoxText..error.count.."x: "..error.message.."\n"
-  end
-  --add diagnostics
-  local diagnostics = getDiagnostics()
-  errorBoxText = errorBoxText.."\n"..diagnostics.dateString.."\nMDT: "..diagnostics.addonVersion.."\nClient: "..diagnostics.gameVersion.." "..diagnostics.locale.."\nCharacter: "..diagnostics.name.."-"..diagnostics.realm.." ("..diagnostics.region..")"
-  errorBoxText = errorBoxText.."\n"..diagnostics.combatState.."\n"..diagnostics.zoneInfo.."\n"
-  errorBoxText = errorBoxText.."\nRoute:\n"..diagnostics.presetExport
-  errorBoxText = errorBoxText.."\nStacktraces\n\n"
-  for _, error in ipairs(caughtErrors) do
-    errorBoxText = errorBoxText..error.stackTrace.."\n"
+  if not MDT.errorFrame or not MDT.errorFrame.errorBox then
+    printErrorsToChat(errorBoxText)
+    hasShown = true
+    return
   end
 
   MDT.errorFrame.errorBox:SetText(errorBoxText)
+  hasShown = true
   MDT.errorFrame:Show()
 end
 
@@ -245,7 +304,15 @@ function MDT:GetErrors()
 end
 
 function MDT:RegisterErrorHandledFunctions()
+  if MDT.errorHandlersRegistered then return end
+  MDT.errorHandlersRegistered = true
+  -- wrapping breaks colon/dot calls on Legion; rely on xpcall in async/coroutines instead
+  if MDT.IsLegion and MDT:IsLegion() then return end
   --register all functions except the ones that have to run as coroutines
+  local dotFunctions = {
+    ["CreateFramePool"] = true,
+    ["GetFramePool"] = true,
+  }
   local blacklisted = {
     ["DungeonEnemies_UpdateSelected"] = true,
     ["DungeonEnemies_UpdateEnemiesAsync"] = true,
@@ -266,6 +333,8 @@ function MDT:RegisterErrorHandledFunctions()
     ["RegisterErrorHandledFunctions"] = true,
     ["OnError"] = true,
     ["DeepCopy"] = true,
+    ["MakeCopyHelper"] = true,
+    ["DisplayErrors"] = true,
   }
   local tablesToAdd = {
     MDT, MDTDungeonEnemyMixin
@@ -273,18 +342,32 @@ function MDT:RegisterErrorHandledFunctions()
   for k, table in pairs(tablesToAdd) do
     for funcName, func in pairs(table) do
       if type(func) == "function" and not blacklisted[funcName] then
-        table[funcName] = function(...)
-          currentFunc = funcName
-          local results = { xpcall(func, onError, ...) }
-          local ok = select(1, unpack(results))
-          if not ok then
-            if addTrace then
-              --add stackTrace to the latest error
-              caughtErrors[#caughtErrors].stackTrace = currentFunc..":\n"..debugstack()
+        if dotFunctions[funcName] then
+          table[funcName] = function(...)
+            currentFunc = funcName
+            local results = { xpcall(func, onError, ...) }
+            local ok = select(1, unpack(results))
+            if not ok then
+              if addTrace then
+                caughtErrors[#caughtErrors].stackTrace = currentFunc..":\n"..debugstack()
+              end
+              return
             end
-            return
+            return select(2, unpack(results))
           end
-          return select(2, unpack(results))
+        else
+          table[funcName] = function(self, ...)
+            currentFunc = funcName
+            local results = { xpcall(func, onError, self, ...) }
+            local ok = select(1, unpack(results))
+            if not ok then
+              if addTrace then
+                caughtErrors[#caughtErrors].stackTrace = currentFunc..":\n"..debugstack()
+              end
+              return
+            end
+            return select(2, unpack(results))
+          end
         end
       end
     end

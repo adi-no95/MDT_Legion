@@ -47,14 +47,6 @@ local candidates = {
 
     end,
   },
-  ["MDT_Legacy"] = { -- we dont want to have old versions of this messing with map versions
-    name = "MDT_Legacy",
-    version = 112,
-    detected = false,
-    onDetect = function()
-
-    end,
-  },
   ["WowauditInviteTool"] = {
     name = "WowauditInviteTool",
     version = 117,
@@ -87,6 +79,12 @@ conflictCheckFrame:SetScript("OnEvent", function(self, event, ...)
   end
 end)
 
+local function parseAddonVersionNum(versionString)
+  if not versionString or versionString == "" then return nil end
+  local stripped = versionString:gsub("[^0-9.]", ""):gsub("%.", "")
+  return tonumber(stripped)
+end
+
 function MDT:CheckAddonConflicts()
   for i = 1, C_AddOns.GetNumAddOns() do
     local name = C_AddOns.GetAddOnInfo(i)
@@ -95,9 +93,8 @@ function MDT:CheckAddonConflicts()
     if loaded and candidate then
       if candidate.version then
         ---@diagnostic disable-next-line: redundant-parameter
-        local version = C_AddOns.GetAddOnMetadata(i, "Version"):gsub("%.", "")
-        local versionNum = tonumber(version)
-        candidate.detected = versionNum <= candidate.version
+        local versionNum = parseAddonVersionNum(C_AddOns.GetAddOnMetadata(i, "Version"))
+        candidate.detected = versionNum and versionNum <= candidate.version
       else
         candidate.detected = true
       end

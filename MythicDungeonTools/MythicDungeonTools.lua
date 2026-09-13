@@ -12,7 +12,7 @@ local tinsert, tremove, CreateFrame, tonumber, max, min, abs, pairs, ipairs, Get
 
 local sizex = 840
 local sizey = 555
-local framesInitialized, initFrames
+local framesInitialized, initFrames, initInProgress
 MDT.externalLinks = {
   {
     name = "GitHub",
@@ -371,12 +371,14 @@ function MDT:ShowInterfaceInternal(force)
     return
   end
   if self:CheckAddonConflicts() then
-    self.ShowConflictFrame()
+    self:ShowConflictFrame()
     return
   end
-  MDT:DisplayErrors()
   if not framesInitialized then initFrames() end
-  if not framesInitialized then return end
+  if not framesInitialized then
+    MDT:DisplayErrors(true)
+    return
+  end
   if self.main_frame:IsShown() and not force then
     MDT:HideInterface()
   else
@@ -384,6 +386,7 @@ function MDT:ShowInterfaceInternal(force)
     self:CheckCurrentZone()
     MDT:UpdateBottomText()
   end
+  MDT:DisplayErrors()
 end
 
 function MDT:InitializeFadeFrame()
@@ -625,7 +628,9 @@ local bottomTips = {
 }
 
 function MDT:UpdateBottomText()
-  local f = self.main_frame.bottomPanelString
+  local mdt = self or MDT
+  if not mdt.main_frame or not mdt.main_frame.bottomPanelString then return end
+  local f = mdt.main_frame.bottomPanelString
   if db.scale < 1 then
     f:SetText("")
     return
@@ -720,16 +725,16 @@ function MDT:MakeTopBottomTextures(frame)
   MDT:FixAceGUIShowHide(externalButtonGroup, frame)
   externalButtonGroup.frame:ClearAllPoints()
   externalButtonGroup.frame:SetParent(frame.bottomPanel)
-  if not externalButtonGroup.frame.SetBackdrop then
-    Mixin(externalButtonGroup.frame, BackdropTemplateMixin)
-  end
+  MDT.EnsureBackdropMixin(externalButtonGroup.frame)
   externalButtonGroup.frame:SetBackdropColor(0, 0, 0, 0)
   externalButtonGroup:SetHeight(40)
   externalButtonGroup:SetPoint("LEFT", frame.bottomLeftPanelString, "RIGHT", 0, 0)
   externalButtonGroup:SetLayout("Flow")
   externalButtonGroup.frame:SetFrameStrata("High")
   externalButtonGroup.frame:SetFrameLevel(7)
-  externalButtonGroup.frame:ClearBackdrop()
+  if externalButtonGroup.frame.ClearBackdrop then
+    externalButtonGroup.frame:ClearBackdrop()
+  end
   frame.externalButtonGroup = externalButtonGroup
 
   for _, dest in ipairs(MDT.externalLinks) do
@@ -1324,17 +1329,7 @@ function MDT:MakeSidePanel(frame)
   frame.sidePanel.WidgetGroup:AddChild(frame.sidePanel.middleLine)
   frame.sidePanel.WidgetGroup.frame:SetFrameLevel(3)
 
-  local progressBar = CreateFrame("Frame", nil, frame.sidePanel, "ScenarioProgressBarTemplate")
-  if not progressBar.Bar then
-    progressBar = CreateFrame("Frame", nil, frame.sidePanel)
-    progressBar:SetSize(200, 20)
-    progressBar.Bar = CreateFrame("StatusBar", nil, progressBar)
-    progressBar.Bar:SetAllPoints(progressBar)
-    progressBar.Bar:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
-    progressBar.Bar:SetMinMaxValues(0, 100)
-    progressBar.Bar.Label = progressBar.Bar:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-    progressBar.Bar.Label:SetPoint("CENTER")
-  end
+  local progressBar = MDT.CreateProgressBar(frame.sidePanel)
   frame.sidePanel.ProgressBar = progressBar
   frame.sidePanel.ProgressBar:Show()
   frame.sidePanel.ProgressBar:ClearAllPoints()
@@ -1381,24 +1376,25 @@ end
 
 ---Progressbar_SetValue
 ---Sets the value/progress/color of the count progressbar to the apropriate data
-function MDT:Progressbar_SetValue(self, totalCurrent, totalMax)
+function MDT:Progressbar_SetValue(progressBar, totalCurrent, totalMax)
+  if not progressBar or not progressBar.Bar then return end
   local percent = (totalCurrent / totalMax) * 100
   if percent >= 102 then
     if totalCurrent - totalMax > 8 then
-      self.Bar:SetStatusBarColor(1, 0, 0, 1)
+      progressBar.Bar:SetStatusBarColor(1, 0, 0, 1)
     else
-      self.Bar:SetStatusBarColor(0, 1, 0, 1)
+      progressBar.Bar:SetStatusBarColor(0, 1, 0, 1)
     end
   elseif percent >= 100 then
-    self.Bar:SetStatusBarColor(0, 1, 0, 1)
+    progressBar.Bar:SetStatusBarColor(0, 1, 0, 1)
   else
-    self.Bar:SetStatusBarColor(0.26, 0.42, 1)
+    progressBar.Bar:SetStatusBarColor(0.26, 0.42, 1)
   end
-  self.Bar:SetValue(percent)
-  if self.Bar.Label then
-    self.Bar.Label:SetText(MDT:FormatEnemyForces(totalCurrent, totalMax, true))
+  progressBar.Bar:SetValue(percent)
+  if progressBar.Bar.Label then
+    progressBar.Bar.Label:SetText(MDT:FormatEnemyForces(totalCurrent, totalMax, true))
   end
-  self.AnimValue = percent
+  progressBar.AnimValue = percent
 end
 
 ---UpdateProgressbar
@@ -1410,7 +1406,9 @@ function MDT:UpdateProgressbar()
 end
 
 function MDT:OnPan(cursorX, cursorY)
+  if not cursorX or not cursorY then return end
   local scrollFrame = MDTScrollFrame
+  if not scrollFrame or not scrollFrame.cursorX or not scrollFrame.cursorY then return end
   local scale = MDTMapPanelFrame:GetScale() / 1.5
   local deltaX = (scrollFrame.cursorX - cursorX) / scale
   local deltaY = (cursorY - scrollFrame.cursorY) / scale
@@ -3948,6 +3946,7 @@ function MDT:Round(number, decimals)
 end
 
 function MDT:RGBToHex(r, g, b)
+  if not r or not g or not b then return "ffffff" end
   r = r * 255
   g = g * 255
   b = b * 255
@@ -4200,9 +4199,12 @@ function MDT:PresetObjectStepForward(preset, silent, ignoreLiveSession)
 end
 
 function MDT:FixAceGUIShowHide(widget, frame, isFrame, hideOnly)
+  if not widget then return end
   frame = frame or MDT.main_frame
+  if not frame then return end
   local originalShow, originalHide = frame.Show, frame.Hide
   if not isFrame then
+    if not widget.frame then return end
     widget = widget.frame
   end
   function frame:Hide(...)
@@ -4433,6 +4435,9 @@ local asyncConfig = {
   maxTime = 40,
   maxTimeCombat = 8,
   errorHandler = function(msg, stackTrace, name)
+    if not framesInitialized then
+      initInProgress = false
+    end
     MDT:OnError(msg, stackTrace, name)
   end,
 }
@@ -4463,26 +4468,36 @@ function MDT:HideSpinner()
   MDT.initSpinner.Anim:Stop()
 end
 
-local initStarted
 function initFrames()
-  if initStarted then return end
-  initStarted = true
+  if framesInitialized then return end
+  if initInProgress then
+    repeat coroutine.yield() until framesInitialized or not initInProgress
+    return
+  end
+  initInProgress = true
   for _, module in pairs(MDT.modules) do
     if module.OnInitialize then
       module:OnInitialize()
     end
   end
-  MDT:RegisterErrorHandledFunctions()
   MDT:CheckSeenDungeonLists()
 
-  local initSpinner = CreateFrame("Button", "MDTInitSpinner", UIParent, "LoadingSpinnerTemplate")
-  initSpinner.BackgroundFrame.Background:SetVertexColor(0, 1, 0, 1)
-  initSpinner.AnimFrame.Circle:SetVertexColor(0, 1, 0, 1)
+  local initSpinner
+  local spinnerOk = pcall(function()
+    initSpinner = CreateFrame("Button", "MDTInitSpinner", UIParent, "LoadingSpinnerTemplate")
+    initSpinner.BackgroundFrame.Background:SetVertexColor(0, 1, 0, 1)
+    initSpinner.AnimFrame.Circle:SetVertexColor(0, 1, 0, 1)
+    initSpinner.Anim = initSpinner.Anim
+  end)
+  if not spinnerOk or not initSpinner then
+    initSpinner = CreateFrame("Frame", "MDTInitSpinner", UIParent)
+    initSpinner.Anim = { Play = function() end, Stop = function() end }
+  end
   initSpinner:SetPoint("CENTER", UIParent, "CENTER", 0, 150)
   initSpinner:SetFrameStrata("DIALOG")
   initSpinner:SetSize(60, 60)
   initSpinner:Show()
-  initSpinner.Anim:Play()
+  if initSpinner.Anim and initSpinner.Anim.Play then initSpinner.Anim:Play() end
   MDT.initSpinner = initSpinner
 
   local main_frame = CreateFrame("frame", "MDTFrame", UIParent)
@@ -4525,9 +4540,8 @@ function initFrames()
   main_frame.mainFrametex:SetDrawLayer(canvasDrawLayer, -5)
   main_frame.mainFrametex:SetColorTexture(unpack(MDT.BackdropColor))
 
-  ---@diagnostic disable-next-line: redundant-parameter
-  local version = C_AddOns.GetAddOnMetadata(AddonName, "Version"):gsub("%.", "")
-  db.version = tonumber(version)
+  local versionStr = C_AddOns.GetAddOnMetadata(AddonName, "Version") or ""
+  db.version = tonumber(versionStr:gsub("[^0-9.]", ""):gsub("%.", ""))
   -- Set frame position
   main_frame:ClearAllPoints()
   main_frame:SetPoint(db.anchorTo, UIParent, db.anchorFrom, db.xoffset, db.yoffset)
@@ -4705,8 +4719,10 @@ function initFrames()
   end
 
   framesInitialized = true
+  initInProgress = false
+  MDT:RegisterErrorHandledFunctions()
   --Maximize if needed
   if db.maximized then MDT:Maximize() end
   initSpinner:Hide()
-  initSpinner.Anim:Stop()
+  if initSpinner.Anim and initSpinner.Anim.Stop then initSpinner.Anim:Stop() end
 end

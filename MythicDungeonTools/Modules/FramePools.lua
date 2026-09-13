@@ -21,7 +21,8 @@ function MDT.CreateFramePool(frametype, parent, template)
     Acquire = function(self)
       local frame = table.remove(self.inactive)
       if not frame then
-        frame = CreateFrame(frametype, nil, parent, template)
+        frame = MDT.CreateFrameWithTemplate(frametype, nil, parent, template)
+        if not frame then return nil end
         local override = overrides[template]
         if override then
           for k, v in pairs(override) do
@@ -29,7 +30,9 @@ function MDT.CreateFramePool(frametype, parent, template)
           end
         end
       end
-      table.insert(self.active, frame)
+      if frame then
+        table.insert(self.active, frame)
+      end
       return frame
     end,
     ReleaseAll = function(self)
@@ -45,5 +48,11 @@ function MDT.CreateFramePool(frametype, parent, template)
 end
 
 function MDT.GetFramePool(template)
+  if not template then return end
+  if not framePools[template] then
+    local parent = MDT.main_frame and MDT.main_frame.mapPanelFrame or UIParent
+    local frameType = (template == "MDTAnimatedLineTemplate") and "Frame" or "Button"
+    MDT.CreateFramePool(frameType, parent, template)
+  end
   return framePools[template]
 end

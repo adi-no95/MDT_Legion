@@ -128,11 +128,16 @@ local getFSFrameByPullIdx = function(pullIdx)
   end
 end
 
+local function setPullLabelScale(fsFrame, scale)
+  if not fsFrame then return end
+  fsFrame:SetScale(scale)
+end
+
 function MDT:PullClickAreaOnEnter(pullIdx)
   local fsFrame = getFSFrameByPullIdx(pullIdx)
   if not fsFrame then return end
-  fsFrame.fs:SetScale(1.25)
-  fsFrame.fs:SetAlpha(1)
+  setPullLabelScale(fsFrame, 1.25)
+  if fsFrame.fs then fsFrame.fs:SetAlpha(1) end
   for _, tex in pairs(activeTextures) do
     if tex.pullIdx == pullIdx then
       tex:SetAlpha(1)
@@ -143,8 +148,8 @@ end
 function MDT:PullClickAreaOnLeave()
   for _, fsFrame in pairs(activeFontStrings) do
     local isCurrentPull = fsFrame.pullIdx == MDT:GetCurrentPull()
-    fsFrame.fs:SetScale(1)
-    fsFrame.fs:SetAlpha(isCurrentPull and 1 or NONACTIVE_ALPHA)
+    setPullLabelScale(fsFrame, 1)
+    if fsFrame.fs then fsFrame.fs:SetAlpha(isCurrentPull and 1 or NONACTIVE_ALPHA) end
   end
   for _, tex in pairs(activeTextures) do
     local isCurrentPull = tex.pullIdx == MDT:GetCurrentPull()

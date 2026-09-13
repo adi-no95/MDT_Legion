@@ -128,7 +128,14 @@ local methods = {
 	end,
 
 	["SetFontObject"] = function(self, font)
-		self:SetFont((font or GameFontHighlightSmall):GetFont())
+		font = font or GameFontHighlightSmall
+		if type(font) == "string" then
+			self.label:SetFontObject(_G[font] or font)
+		elseif font.GetFont then
+			self:SetFont(font:GetFont())
+		else
+			self.label:SetFontObject(font)
+		end
 	end,
 
 	["SetImageSize"] = function(self, width, height)
