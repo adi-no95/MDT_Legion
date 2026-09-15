@@ -652,6 +652,23 @@ if not C_ChallengeMode then
 	C_ChallengeMode = {}
 end
 
+-- CombatLogGetCurrentEventInfo was added in 8.0. On 7.3.5 the payload is the event args.
+-- Store them on a frame created at load so later COMBAT_LOG handlers can read the same values.
+if not CombatLogGetCurrentEventInfo then
+	local cleuArgs, cleuCount = {}, 0
+	local cleuFrame = CreateFrame("Frame")
+	cleuFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+	cleuFrame:SetScript("OnEvent", function(_, _, ...)
+		cleuCount = select("#", ...)
+		for i = 1, cleuCount do
+			cleuArgs[i] = select(i, ...)
+		end
+	end)
+	function CombatLogGetCurrentEventInfo()
+		return unpack(cleuArgs, 1, cleuCount)
+	end
+end
+
 -- GetMapUIInfo was added in BfA; Legion uses GetMapInfo with the same return layout.
 if not C_ChallengeMode.GetMapUIInfo then
 	if C_ChallengeMode.GetMapInfo then

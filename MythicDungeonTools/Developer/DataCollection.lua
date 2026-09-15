@@ -37,7 +37,8 @@ function DC:AddCollectedDataToEnemyTable(dungeonIndex, ignoreSpells, ignoreCC)
 	--add spells/characteristics from db to dungeonEnemies
 	local spellsAdded = 0
 	local ccAdded = 0
-	local enemies = MDT.dungeonEnemies[dungeonIndex]
+	local enemies = MDT.dungeonEnemies[dungeonIndex] or {}
+	print(dungeonIndex, "enemies", enemies)
 	local collectedData = db.dataCollection[dungeonIndex]
 	if collectedData and not ignoreSpells then
 		for id, spells in pairs(collectedData) do
@@ -345,10 +346,23 @@ function DC.PLAYER_ENTERING_WORLD(self, ...)
 	cmsTimeStamp = nil
 end
 
+local function getCombatLogEventInfo(...)
+	-- 7.3.5 passes the payload as event args; 8.0+ uses CombatLogGetCurrentEventInfo().
+	if select("#", ...) > 0 then
+		return ...
+	end
+	if CombatLogGetCurrentEventInfo then
+		return CombatLogGetCurrentEventInfo()
+	end
+end
+
 function DC.COMBAT_LOG_EVENT_UNFILTERED(self, ...)
 	local timestamp, subevent, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool =
-		CombatLogGetCurrentEventInfo()
-	-- enemy spells: only collect in Mythic+ Challenge Mode
+		getCombatLogEventInfo(...)
+	if not subevent then
+		return
+	end
+	-- enemy spells
 	if trackedEvents[subevent] and sourceGUID then
 		local unitType, _, serverId, instanceId, zoneId, id, spawnUid = strsplit("-", sourceGUID)
 		id = tonumber(id)
@@ -503,15 +517,17 @@ function DC:InitHealthTrack()
 		local level, activeAffixIDs = C_ChallengeMode.GetActiveKeystoneInfo()
 		local fortified
 		local tyrannical
-		for k, v in pairs(activeAffixIDs) do
-			if v == 10 then
-				fortified = true
-			end
-			if v == 9 then
-				tyrannical = true
+		if type(activeAffixIDs) == "table" then
+			for k, v in pairs(activeAffixIDs) do
+				if v == 10 then
+					fortified = true
+				end
+				if v == 9 then
+					tyrannical = true
+				end
 			end
 		end
-		level = isChallenge and level or -1
+		level = (isChallenge and type(level) == "number" and level > 0) and level or -1
 		if level > -1 then
 			local unit
 			if event == "UPDATE_MOUSEOVER_UNIT" then
