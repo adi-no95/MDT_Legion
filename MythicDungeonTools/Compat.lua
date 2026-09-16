@@ -675,6 +675,7 @@ if not C_ChallengeMode.GetMapUIInfo then
 		C_ChallengeMode.GetMapUIInfo = C_ChallengeMode.GetMapInfo
 	else
 		local legionChallengeTimers = {
+			[199] = 2280, -- Black Rook Hold
 			[197] = 1800, -- Eye of Azshara
 			[198] = 1800, -- Darkheart Thicket
 			[200] = 2100, -- Halls of Valor

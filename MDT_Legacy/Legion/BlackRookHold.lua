@@ -1,25 +1,25 @@
---- OLD FILE, ONLY USED FOR HISTORIC PURPOSES
---- OLD FILE, ONLY USED FOR HISTORIC PURPOSES
---- OLD FILE, ONLY USED FOR HISTORIC PURPOSES
---- OLD FILE, ONLY USED FOR HISTORIC PURPOSES
---- OLD FILE, ONLY USED FOR HISTORIC PURPOSES
+local addonName = ...
 local MDT = MDT
 local L = MDT.L
 local dungeonIndex = 1
 MDT.dungeonList[dungeonIndex] = L["Black Rook Hold"]
 MDT.mapInfo[dungeonIndex] = {
-  teleportId = 424153,
-  shortName = L["blackrookHoldShortName"]
+  teleportId = 0, -- no teleport
+  iconId = 1417423,
+  shortName = L["blackrookHoldShortName"],
+  englishName = "Black Rook Hold",
+  mapID = 199
 };
 
+local zones = { 751, 752, 753, 754, 755, 756, 1081 }
+for _, zone in ipairs(zones) do
+  MDT.zoneIdToDungeonIdx[zone] = dungeonIndex
+end
+
+local texturePath = 'Interface\\AddOns\\'..addonName..'\\Legion\\Textures\\BlackrookHold'
 MDT.dungeonMaps[dungeonIndex] = {
-  [0] = "BlackRookHoldDungeon",
-  [1] = "BlackRookHoldDungeon1_",
-  [2] = "BlackRookHoldDungeon2_",
-  [3] = "BlackRookHoldDungeon3_",
-  [4] = "BlackRookHoldDungeon4_",
-  [5] = "BlackRookHoldDungeon5_",
-  [6] = "BlackRookHoldDungeon6_",
+  [0] = "",
+  [1] = { customTextures = texturePath },
 }
 MDT.dungeonSubLevels[dungeonIndex] = {
   [1] = L["The Ravenscrypt"],

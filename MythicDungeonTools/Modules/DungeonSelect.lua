@@ -22,11 +22,12 @@ MDT.dungeonSelectionToIndex = {}
 do
   if MDT:IsLegion() then
     tinsert(MDT.seasonList, L["Legion"])
-    tinsert(MDT.dungeonSelectionToIndex, { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 })
+    tinsert(MDT.dungeonSelectionToIndex, { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 })
   end
 end
 
 MDT.knownDungeons = {
+  [1] = "Black Rook Hold",
   [2] = "Cathedral of Eternal Night",
   [3] = "Court of Stars",
   [4] = "Darkheart Thicket",
