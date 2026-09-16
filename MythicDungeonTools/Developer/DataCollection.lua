@@ -5,6 +5,7 @@ local MDT = MDT
 
 -- CHANGE HERE TO DEFINE WHICH DUNGEONS TO TRACK FOR DATA COLLECTION
 local dungeonsToTrack = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 }
+local dungeonsToTrack = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 }
 
 MDT.DataCollection = {}
 local DC = MDT.DataCollection
