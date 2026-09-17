@@ -516,7 +516,7 @@ local function blipDevModeSetup(blip)
     y = y - yOffset
     local deltaX = x - MDT.dungeonEnemies[db.currentDungeonIdx][blip.enemyIdx].clones[blip.cloneIdx].x
     local deltaY = y - MDT.dungeonEnemies[db.currentDungeonIdx][blip.enemyIdx].clones[blip.cloneIdx].y
-    if moveGroup then
+    if moveGroup and blip.clone.g then
       for enemyIdx, data in pairs(MDT.dungeonEnemies[db.currentDungeonIdx]) do
         for cloneIdx, clone in pairs(data.clones) do
           if clone.g == blip.clone.g then
