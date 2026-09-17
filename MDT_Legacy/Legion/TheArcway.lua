@@ -2416,4 +2416,32 @@ MDT.dungeonEnemies[dungeonIndex] = {
       },
     },
   },
+  [24] = {
+    ["name"] = "Advisor Vandros",
+    ["id"] = 98208,
+    ["count"] = 0,
+    ["health"] = 70845756,
+    ["scale"] = 1,
+    ["creatureType"] = "Humanoid",
+    ["level"] = 112,
+    ["isBoss"] = true,
+    ["encounterID"] = 1501,
+    ["instanceID"] = 726,
+    ["spells"] = {
+      [202974] = {},
+      [203087] = {},
+      [203176] = {},
+      [203254] = {},
+      [203881] = {},
+      [203882] = {},
+      [220871] = {},
+    },
+    ["clones"] = {
+      [1] = {
+        ["x"] = 403.61737351202,
+        ["y"] = -255.01815318652,
+        ["sublevel"] = 1,
+      },
+    },
+  },
 }
