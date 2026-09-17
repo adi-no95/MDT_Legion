@@ -322,11 +322,11 @@ L["Bound Voidlord"] = "구속된 공허군주"
 L["Bound Water Elemental"] = "속박된 물의 정령"
 L["Bounty Hunter"] = "현상금 사냥꾼"
 --[[Translation missing --]]
-L[ [=[Bounty stacks 
-after this pull]=] ] = [=[Bounty stacks 
+L[ [=[Bounty stacks
+after this pull]=] ] = [=[Bounty stacks
 after this pull]=]
 --[[Translation missing --]]
-L[ [=[Bounty stacks 
+L[ [=[Bounty stacks
 after this pull]=] ] = ""
 --[[Translation missing --]]
 L[ [=[Bounty stacks
@@ -437,7 +437,8 @@ L["Click to go to %s"] = "클릭하여 %s 로 갑니다."
 L["Click to set dungeon level to 10"] = "클릭하여 던전 레벨을 10으로 설정 합니다."
 L["Click to switch to current week"] = "클릭하여 이번 주로 전환합니다."
 L["Click to toggle AddOn Window"] = "클릭하여 MDT 설정창을 엽니다."
-L["Clicking this button will attempt to join the ongoing Live Session of your group or create a new one if none is found"] = "이 버튼을 클릭하면 그룹의 진행 중인 라이브 세션에 참여하거나, 아무것도 찾을 수 없는 경우 새 세션을 만듭니다."
+L["Clicking this button will attempt to join the ongoing Live Session of your group or create a new one if none is found"] =
+  "이 버튼을 클릭하면 그룹의 진행 중인 라이브 세션에 참여하거나, 아무것도 찾을 수 없는 경우 새 세션을 만듭니다."
 L["Clockwork Sapper"] = "태엽돌이 공병"
 L["Close"] = "닫기"
 L["Cloud Prince"] = "구름 왕자"
@@ -601,7 +602,8 @@ L["dawnBreakerShortName"] = "인도자"
 L["dawnlowerShortName"] = "몰락"
 L["DawnOfTheInfiniteLower"] = "무한의 여명: 갈라크론드의 몰락"
 L["DawnOfTheInfiniteUpper"] = "무한의 여명: 무르도즈노의 현신"
-L["dawnPortalNote"] = "차원문을 활성화하려면 무한 균열마법사 2와 4를 처치해야 합니다. 시간의 편차가 계속 생성되지만 카운트를 주지는 않습니다."
+L["dawnPortalNote"] =
+  "차원문을 활성화하려면 무한 균열마법사 2와 4를 처치해야 합니다. 시간의 편차가 계속 생성되지만 카운트를 주지는 않습니다."
 L["dawnupperShortName"] = "현신"
 L["Dazar'ai Augur"] = "다자르아이 점술가"
 L["Dazar'ai Colossus"] = "다자르아이 거수"
@@ -891,7 +893,7 @@ L["Entropic Spire of Ny'alotha"] = "혼돈에 물든 나이알로사의 첨탑"
 L["Epoch Ripper"] = "시대의 해체자"
 L["Eredar Chaosbringer"] = "에레다르 혼돈인도자"
 L["Erekem"] = "에레켐"
-L["Eric \"The Swift\""] = "\"날쌘돌이\" 에릭"
+L['Eric "The Swift"'] = '"날쌘돌이" 에릭'
 L["Erkhart Stormvein"] = "에크하트 스톰베인"
 --[[Translation missing --]]
 L["Error Message:"] = "Error Message:"
@@ -1600,7 +1602,8 @@ L["Lady Velandras Ravencrest"] = "여군주 벨란드라스 레이븐크레스�
 L["Lady Waycrest"] = "부인 웨이크레스트"
 L["Lakesis"] = "라케시스"
 L["Language"] = "언어"
-L["LargePresetWarning"] = "매우 큰 경로를 공유하려고 합니다(전송 시간: %.1fs)%s내보내기 기능을 사용하여 외부 웹사이트를 통해 큰 경로를 공유하거나 경로에서 그림을 제거하는 것이 좋습니다.%s이 경로를 공유하시겠습니까?%s"
+L["LargePresetWarning"] =
+  "매우 큰 경로를 공유하려고 합니다(전송 시간: %.1fs)%s내보내기 기능을 사용하여 외부 웹사이트를 통해 큰 경로를 공유하거나 경로에서 그림을 제거하는 것이 좋습니다.%s이 경로를 공유하시겠습니까?%s"
 L["Lashing Voidling"] = "채찍 공허괴물"
 L["Lava Flare"] = "용암 섬광"
 L["Lavanthor"] = "라반토르"
@@ -1632,7 +1635,7 @@ L["Living Waste"] = "살아 있는 폐기물"
 L["Loaderbot"] = "운반로봇"
 L["Loatheb"] = "로데브"
 L["Local color blind mode"] = "현재 색각 보정 필터"
-L["localeButtonTooltip1"] = "\"AddonLocale\" 애드온 필요"
+L["localeButtonTooltip1"] = '"AddonLocale" 애드온 필요'
 --[[Translation missing --]]
 L["localeButtonTooltip2"] = "Click to start settings dialog in chat"
 L["Locked"] = "잠김"
@@ -1664,7 +1667,8 @@ L["Mage Hunter Initiate"] = "마법사 사냥꾼 수습생"
 L["Mage Slayer"] = "마법사 사냥개"
 L["Mage-Lord Urom"] = "마법사 군주 우롬"
 --[[Translation missing --]]
-L["MaggotNote"] = "Note on Devouring Maggots:%s%sDevouring Maggots with the buff 'Parasitic' will try to 'Infest' Players%sUpon successful cast of 'Infest' the Devouring Maggot will disappear and spawn 2x Devouring Maggots after a debuff on the infested player runs out.%sYou can only gain 1 count for killing the initial Infested Maggot - the 2 newly spawned Infested Maggots do not give count.%s%sInfected Peasants spawn 3x Devouring Maggots which do give 1 count each.%sThese Devouring Maggots are mapped next to the Infected Peasants"
+L["MaggotNote"] =
+  "Note on Devouring Maggots:%s%sDevouring Maggots with the buff 'Parasitic' will try to 'Infest' Players%sUpon successful cast of 'Infest' the Devouring Maggot will disappear and spawn 2x Devouring Maggots after a debuff on the infested player runs out.%sYou can only gain 1 count for killing the initial Infested Maggot - the 2 newly spawned Infested Maggots do not give count.%s%sInfected Peasants spawn 3x Devouring Maggots which do give 1 count each.%sThese Devouring Maggots are mapped next to the Infected Peasants"
 L["Magic"] = "마법"
 L["Magma Rager"] = "용암 광전사"
 L["Magmatusk"] = "용암엄니"
@@ -1713,7 +1717,8 @@ L["mawOfSoulsShortName"] = "MOS"
 L["Mchimba the Embalmer"] = "장의사 음침바"
 L["MDI Mode"] = "MDI 모드"
 L["MDT Error"] = "MDT 오류"
-L["MDT: Cannot add enemy - you are trying to add too many enemies of the same kind"] = "MDT: 적을 추가할 수 없습니다. 같은 종류의 적을 너무 많이 추가하려고 합니다."
+L["MDT: Cannot add enemy - you are trying to add too many enemies of the same kind"] =
+  "MDT: 적을 추가할 수 없습니다. 같은 종류의 적을 너무 많이 추가하려고 합니다."
 L["MDT: Error importing preset"] = "MDT: 경로 가져오기 오류 "
 L["MDT: Spells for %s:"] = "MDT: %s의 마법"
 L["MDT: Use /mdt minimap to show the minimap icon again"] = "MDT: /mdt minimap 명령어로 미니맵 아이콘을 다시 띄울 수 있습니다."
@@ -1803,7 +1808,8 @@ L["Mordretha, the Endless Empress"] = "무한의 여제 모르드레타"
 L["Moroes"] = "모로스"
 L["motherlodeShortName"] = "왕노"
 L["Mouseover a patrolling enemy with a blue border to view the patrol path."] = "로머의 경로는 로머 위에 마우스를 올리면 남색으로 표시 됩니다"
-L["Mouseover the Live button while in a group to learn more about Live mode."] = "그룹에 있는 동안 라이브 버튼 위에 마우스를 올리면 라이브 모드에 대해 자세히 알아볼 수 있습니다."
+L["Mouseover the Live button while in a group to learn more about Live mode."] =
+  "그룹에 있는 동안 라이브 버튼 위에 마우스를 올리면 라이브 모드에 대해 자세히 알아볼 수 있습니다."
 L["Move Object"] = "그림: 옮기기"
 L["Mueh'zala"] = "무에젤라"
 L["Murkbrine Fishmancer"] = "진흙소금 생선술사"
@@ -1997,12 +2003,15 @@ L["Plaguebound Fallen"] = "역병결합 타락자"
 L["Plagued Bat"] = "역병에 걸린 박쥐"
 L["Plagued Rat"] = "역병 걸린 쥐"
 L["Plaguefall"] = "역병 몰락지"
-L["plaguefallDevotedNote"] = "이코르 바일플래시와 교전 전에 수액이 흐르는 사체에 의해 이미 변화된 역병결합 헌신자는 적 병력 수치를 주지 않습니다."
+L["plaguefallDevotedNote"] =
+  "이코르 바일플래시와 교전 전에 수액이 흐르는 사체에 의해 이미 변화된 역병결합 헌신자는 적 병력 수치를 주지 않습니다."
 L["plaguefallShortName"] = "역병"
 L["Plagueroc"] = "역병대괴조"
 L["Plain Texture"] = "일반 텍스처"
-L["Players can join the live session by either clicking this button or the Live Session chat link"] = "플리에어분들은 이 버튼이나 채팅 링크를 누르시고 라이브 세션에 참여하실 수 있습니다"
-L["Please report any bugs on https://github.com/Nnoggie/MythicDungeonTools/issues"] = "버그가 있다면 https://github.com/Nnoggie/MythicDungeonTools/issues 로 신고해 주시기 바랍니다."
+L["Players can join the live session by either clicking this button or the Live Session chat link"] =
+  "플리에어분들은 이 버튼이나 채팅 링크를 누르시고 라이브 세션에 참여하실 수 있습니다"
+L["Please report any bugs on https://github.com/adi-no95/MDT_Legion/issues"] =
+  "버그가 있다면 https://github.com/adi-no95/MDT_Legion/issues 로 신고해 주시기 바랍니다."
 L["Plundering Geist"] = "약탈자 외눈깨비"
 L["Poison"] = "독"
 L["Poisonous Skitterer"] = "맹독거미"
@@ -2216,7 +2225,7 @@ L["Rook Spiderling"] = "탑 새끼거미"
 L["Rook Spinner"] = "탑 그물거미"
 L["rookeryShortname"] = "부화장"
 --[[Translation missing --]]
-L["rookItemDescription"] = [=[After defeating |cFFFF0000Kyrioss|r loot |cFF00FF00Stormrook Feather|r 
+L["rookItemDescription"] = [=[After defeating |cFFFF0000Kyrioss|r loot |cFF00FF00Stormrook Feather|r
 Use it on a nearby |cFF00FF00Chained Stormrook|r to gain this buff for 5 minutes.]=]
 L["Root"] = "묶임"
 L["Rotation"] = "로테이션"
@@ -2454,7 +2463,8 @@ L["siegeGraveyardNote1"] = "하사관 베인브릿지나 난도질꾼 레드후�
 L["siegeGraveyardNote2"] = "공포의 선장 록우드를 패배시킬 후에 얻습니다"
 L["siegeGraveyardNote3"] = "하달 다크패덤을 패배시킬 후에 얻습니다"
 L["siegeGutterNote2"] = "G72 거터는 적군에게 데미지를 입히고 옆에 있는 보병의 즉사를 유발하여 적군에게 사용할 수 있습니다."
-L["siegeGuttersNote"] = "거터 관련 참고 사항: %s보병은 플레이어가 거터 근처에 접근하면 즉시 처치합니다. 무리의 피해를 받지 않고 죽으면 적에게 아무런 피해도 입히지 않습니다."
+L["siegeGuttersNote"] =
+  "거터 관련 참고 사항: %s보병은 플레이어가 거터 근처에 접근하면 즉시 처치합니다. 무리의 피해를 받지 않고 죽으면 적에게 아무런 피해도 입히지 않습니다."
 L["Siegemaster Olugar"] = "공성전문가 오루가"
 L["Siegemaster Rokra"] = "공성전문가 로크라"
 L["siegeOfBoralusShortName"] = "보랄"
@@ -2731,7 +2741,8 @@ L["TazaveshLower"] = "타자베쉬: 경이의 거리"
 L["tazaveshLowerShortName"] = "앞자베쉬"
 L["TazaveshUpper"] = "타자베쉬: 소레아의 승부수"
 L["tazaveshUpperShortName"] = "뒷자베쉬"
-L["tdBuffGateNote"] = "아군을 담음 수 있는 기회. 아군의 종족에 따라서 버프를 줄 겁니다:%s오크/드워프: 10%% 힘/민첩성%s언데드/인간: 10%% 체력%s타우렌/드레나이: 10초당 1%% 생명력+마나%s블러드 엘프/노움: 10%% 지능"
+L["tdBuffGateNote"] =
+  "아군을 담음 수 있는 기회. 아군의 종족에 따라서 버프를 줄 겁니다:%s오크/드워프: 10%% 힘/민첩성%s언데드/인간: 10%% 체력%s타우렌/드레나이: 10초당 1%% 생명력+마나%s블러드 엘프/노움: 10%% 지능"
 L["tdGraveyardNote1"] = "모래 여왕을 패배시킬 후에 얻습니다"
 L["tdGraveyardNote2"] = "제스 하울리스를 패배시킬 후에 얻습니다"
 L["tdGraveyardNote3"] = "기사대장 발리리를 패배시킬 후에 얻습니다"
@@ -2749,7 +2760,8 @@ L["Temple of Sethraliss"] = "세스랄리스 사원"
 L["Temple of Sethraliss Sublevel"] = "세스랄리스 사원"
 --[[Translation missing --]]
 L["Temple of the Jade Serpent"] = "Temple of the Jade Serpent"
-L["templeEyeNote"] = "세스랄리스의 눈%s세스랄리스의 눈들을 세스탈리스의 해골에서 가져가시면 됩니다%s각각의 눈이 12 적 병력을 줄 겁니다"
+L["templeEyeNote"] =
+  "세스랄리스의 눈%s세스랄리스의 눈들을 세스탈리스의 해골에서 가져가시면 됩니다%s각각의 눈이 12 적 병력을 줄 겁니다"
 L["templeGraveyardNote1"] = "메레크타를 패배시킬 후에 얻습니다"
 L["templeGraveyardNote2"] = "세스랄리스의 해골 이벤트를 완료한 후에 얻습니다 "
 --[[Translation missing --]]
@@ -2834,7 +2846,8 @@ L["The Oculus"] = "The Oculus"
 --[[Translation missing --]]
 L["The Plague Quarter"] = "The Plague Quarter"
 L["The Platinum Pummeler"] = "백금 난타로봇"
-L["The preset will continuously synchronize between all party members participating in the Live Session"] = "라이브 세션에 참여하시는 파티 맴버들끼리 길이 계속 동기화될 겁니다"
+L["The preset will continuously synchronize between all party members participating in the Live Session"] =
+  "라이브 세션에 참여하시는 파티 맴버들끼리 길이 계속 동기화될 겁니다"
 --[[Translation missing --]]
 L["The Prison of Yogg-Saron"] = "The Prison of Yogg-Saron"
 L["The Prophet Tharon'ja"] = "예언자 타론자"
@@ -2940,7 +2953,8 @@ L["Titanium Siegebreaker"] = "티타늄 공성파괴자"
 L["Titanium Thunderer"] = "티타늄 천둥병"
 L["Titanium Vanguard"] = "티타늄 선봉대원"
 L["T'lonja"] = "트론자"
-L["To share a different preset while the live session is active simply navigate to the preferred preset and click the new 'Set to Live' Button next to the preset-dropdown"] = "라이브 세션이 활성화된 동안 다른 경로를 공유하려면 선호하는 경로로 이동하고 경로 드롭다운 옆에 있는 새 '라이브로 설정' 버튼을 클릭하면 됩니다."
+L["To share a different preset while the live session is active simply navigate to the preferred preset and click the new 'Set to Live' Button next to the preset-dropdown"] =
+  "라이브 세션이 활성화된 동안 다른 경로를 공유하려면 선호하는 경로로 이동하고 경로 드롭다운 옆에 있는 새 '라이브로 설정' 버튼을 클릭하면 됩니다."
 L["tocNotes"] = "신화 쐐기돌 던전을 계획하고 최적화하기를 위한 도구입니다"
 --[[Translation missing --]]
 L["togc"] = "Trial of the Grand Crusader"
@@ -3193,7 +3207,8 @@ L["War Ohuna"] = "전쟁 오후나"
 L["Warlord Parjesh"] = "전쟁군주 파르제쉬"
 L["Warlord Sargha"] = "전쟁군주 사르가"
 L["Warning"] = "경고"
-L["WARNING_OLD_DUNGEON_IMPORT"] = "이 경로는 현재 MDT 버전에서는 이용할 수 없는 던전에서 시작됩니다. 이 경로를 가져오려면 MDT Legacy를 설치하세요."
+L["WARNING_OLD_DUNGEON_IMPORT"] =
+  "이 경로는 현재 MDT 버전에서는 이용할 수 없는 던전에서 시작됩니다. 이 경로를 가져오려면 MDT Legacy를 설치하세요."
 L["Warp Shade"] = "뒤틀린 그림자"
 L["Warp Stalker"] = "차원의 추적자"
 L["Waste Pipes"] = "폐기물 도관"
@@ -3277,7 +3292,8 @@ L["Ymirjar Witch Doctor"] = "이미야르 의술사"
 L["Ymiron, the Fallen King"] = "타락한 왕 이미론"
 L["Yogg-Saron"] = "요그사론"
 L["You are using MDT. You rock!"] = "MDT를 사용하셔서 짱이세요!!"
-L["You can always return to the current Live Session preset by clicking the 'Return to Live' button next to the preset-dropdown"] = "경로-드롭다운 옆에 있는 '라이브로 돌아가기' 버튼을 클릭하면 언제든지 현재 라이브 세션 경로로 돌아갈 수 있습니다."
+L["You can always return to the current Live Session preset by clicking the 'Return to Live' button next to the preset-dropdown"] =
+  "경로-드롭다운 옆에 있는 '라이브로 돌아가기' 버튼을 클릭하면 언제든지 현재 라이브 세션 경로로 돌아갈 수 있습니다."
 L["You can choose from different color palettes in the automatic pull coloring settings menu."] = "설정 메뉴에서 다른 색상 팔레트 선택할 수 있습니다."
 L["You can cycle through different floors by holding CTRL and using the mousewheel."] = "SHIFT+CTRL+마우스 휠을 사용하면 다른 층으로 변경할 수 있습니다."
 L["You can cycle through dungeons by holding ALT and using the mousewheel."] = "ALT를 누르시면서 마우스 휠을 사용하면 다른 던전을 선택할 수 있습니다"
@@ -3302,4 +3318,3 @@ L["Zul'gamux"] = "줄가묵스"
 L["Zul'Gurub"] = "줄구룹"
 L["Zuraal the Ascended"] = "승천자 주라알"
 L["Zuramat the Obliterator"] = "파멸자 주라마트"
-

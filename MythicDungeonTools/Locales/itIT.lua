@@ -194,7 +194,8 @@ L["Atal'Dazar"] = "Atal'Dazar"
 L["Atal'Dazar Sublevel"] = "Atal'Dazar"
 --[[Translation missing --]]
 L["atalDazarShortName"] = "AD"
-L["atalTeemingNote"] = "Nota sull'affisso Sciame: Il gruppo%s%sG29 non è sempre presente. I nemici aventi l'affisso%sSciame del gruppo G2 non sono sempre presenti. Il gruppo%sG27 non è sempre presente."
+L["atalTeemingNote"] =
+  "Nota sull'affisso Sciame: Il gruppo%s%sG29 non è sempre presente. I nemici aventi l'affisso%sSciame del gruppo G2 non sono sempre presenti. Il gruppo%sG27 non è sempre presente."
 --[[Translation missing --]]
 L["Athenaeum"] = "Athenaeum"
 --[[Translation missing --]]
@@ -388,11 +389,11 @@ L["Bound Water Elemental"] = "Elementale dell'Acqua Domato"
 --[[Translation missing --]]
 L["Bounty Hunter"] = "Bounty Hunter"
 --[[Translation missing --]]
-L[ [=[Bounty stacks 
-after this pull]=] ] = [=[Bounty stacks 
+L[ [=[Bounty stacks
+after this pull]=] ] = [=[Bounty stacks
 after this pull]=]
 --[[Translation missing --]]
-L[ [=[Bounty stacks 
+L[ [=[Bounty stacks
 after this pull]=] ] = ""
 --[[Translation missing --]]
 L[ [=[Bounty stacks
@@ -522,7 +523,8 @@ L["Click to go to %s"] = "Clicca per passare a %s"
 L["Click to set dungeon level to 10"] = "Clicca per impostare il livello della spedizione a 10"
 L["Click to switch to current week"] = "Clicca per passare alla settimana corrente"
 L["Click to toggle AddOn Window"] = "Clicca per aprire/chiudere la finestra dell'AddOn"
-L["Clicking this button will attempt to join the ongoing Live Session of your group or create a new one if none is found"] = "Cliccando questo pulsante tenterai di unirti alla Sessione Live del tuo gruppo, oppure ne creerai una nuova in caso non ne venga trovata nessuna."
+L["Clicking this button will attempt to join the ongoing Live Session of your group or create a new one if none is found"] =
+  "Cliccando questo pulsante tenterai di unirti alla Sessione Live del tuo gruppo, oppure ne creerai una nuova in caso non ne venga trovata nessuna."
 L["Clockwork Sapper"] = "Costrutto Geniere"
 --[[Translation missing --]]
 L["Close"] = "Close"
@@ -1041,7 +1043,7 @@ L["Entropic Spire of Ny'alotha"] = "Guglia Entropica di Ny'alotha"
 L["Epoch Ripper"] = "Epoch Ripper"
 L["Eredar Chaosbringer"] = "Portatore del Caos Eredar"
 L["Erekem"] = "Erekem"
-L["Eric \"The Swift\""] = "Eric \"il Rapido\""
+L['Eric "The Swift"'] = 'Eric "il Rapido"'
 L["Erkhart Stormvein"] = "Erkhart Venariosa"
 --[[Translation missing --]]
 L["Error Message:"] = "Error Message:"
@@ -1499,7 +1501,7 @@ L["HK-8 Aerial Oppression Unit"] = "Unità di Oppressione Aerea HK-8"
 L["Hodir"] = "Hodir"
 L["Hold CTRL to single-select enemies."] = "Tieni premuto CTRL per selezionare un singolo nemico."
 L["Hold SHIFT to create a new pull while selecting enemies."] = "Tieni premuto SHIFT per creare un nuovo pull mentre selezioni i nemici."
-L["Hold SHIFT to delete all presets with the delete preset button."] = "Tieni premuto SHIFT per cancellare tutti i percorsi con il pulsante \"Cancella percorso\"."
+L["Hold SHIFT to delete all presets with the delete preset button."] = 'Tieni premuto SHIFT per cancellare tutti i percorsi con il pulsante "Cancella percorso".'
 L["Honored Raptor"] = "Raptor Onorato"
 --[[Translation missing --]]
 L["Honor's Ascent"] = "Honor's Ascent"
@@ -1780,7 +1782,8 @@ L["Lady Velandras Ravencrest"] = "Dama Velandras Crinocorvo"
 L["Lady Waycrest"] = "Dama Crestabianca"
 L["Lakesis"] = "Lakesis"
 L["Language"] = "Lingua"
-L["LargePresetWarning"] = "Stai cercando di condividere un percorso molto grande (%d caratteri)%sPer i percorsi di grandi dimensioni, si raccomanda di utilizzare la funzione esporta e di condividerli sul siti web esterni.%sConfermi di voler condividere questo percorso?%s"
+L["LargePresetWarning"] =
+  "Stai cercando di condividere un percorso molto grande (%d caratteri)%sPer i percorsi di grandi dimensioni, si raccomanda di utilizzare la funzione esporta e di condividerli sul siti web esterni.%sConfermi di voler condividere questo percorso?%s"
 L["Lashing Voidling"] = "Genia del Vuoto Sferzante"
 L["Lava Flare"] = "Vampa di Lava"
 L["Lavanthor"] = "Lavanthor"
@@ -1817,7 +1820,7 @@ L["Loaderbot"] = "Loaderbot"
 L["Loatheb"] = "Loatheb"
 L["Local color blind mode"] = "Modalità daltonici locale"
 --[[Translation missing --]]
-L["localeButtonTooltip1"] = "Requires the \"AddonLocale\" AddOn"
+L["localeButtonTooltip1"] = 'Requires the "AddonLocale" AddOn'
 --[[Translation missing --]]
 L["localeButtonTooltip2"] = "Click to start settings dialog in chat"
 L["Locked"] = "Chiuso a chiave"
@@ -1849,7 +1852,8 @@ L["Mage Hunter Ascendant"] = "Cacciatore Asceso di Maghi"
 L["Mage Hunter Initiate"] = "Cacciatore Principiante di Maghi"
 L["Mage Slayer"] = "Cacciamaghi"
 L["Mage-Lord Urom"] = "Signore dei Maghi Urom"
-L["MaggotNote"] = "Nota sulle Camole Divoratrici:%s%sLe Camole Divoratrici con il buff 'Parassitica' tenteranno di lanciare 'Infestazione' sui giocatori.%sNel momento in cui riuscirà a lanciare l'abilità 'Infestazione', la Camola Divoratrice scomparirà facendo apparire 2 Camole Divoratrici allo scadere di un debuff sul giocatore infestato.%sOtterrai 1 punto solo per l'uccisione della prima Camola Divoratrice, mentre le nuove Camole Divoratrici che appariranno non conteranno.%s%sI Popolani Infetti fanno apparire 3 Camole Divoratrici le quali valgono 1 punto ognuna.%sQueste Camole Divoratrici sono visualizzate sulla mappa a fianco dei Popolani Infetti."
+L["MaggotNote"] =
+  "Nota sulle Camole Divoratrici:%s%sLe Camole Divoratrici con il buff 'Parassitica' tenteranno di lanciare 'Infestazione' sui giocatori.%sNel momento in cui riuscirà a lanciare l'abilità 'Infestazione', la Camola Divoratrice scomparirà facendo apparire 2 Camole Divoratrici allo scadere di un debuff sul giocatore infestato.%sOtterrai 1 punto solo per l'uccisione della prima Camola Divoratrice, mentre le nuove Camole Divoratrici che appariranno non conteranno.%s%sI Popolani Infetti fanno apparire 3 Camole Divoratrici le quali valgono 1 punto ognuna.%sQueste Camole Divoratrici sono visualizzate sulla mappa a fianco dei Popolani Infetti."
 --[[Translation missing --]]
 L["Magic"] = "Magic"
 L["Magma Rager"] = "Furioso di Magma"
@@ -2006,8 +2010,10 @@ L["Mordretha, the Endless Empress"] = "Mordretha, l'Imperatrice Eterna"
 L["Moroes"] = "Moroes"
 --[[Translation missing --]]
 L["motherlodeShortName"] = "ML"
-L["Mouseover a patrolling enemy with a blue border to view the patrol path."] = "Posiziona il mouse sopra a un nemico di ronda con bordo blu per vederne il percorso di pattugliamento."
-L["Mouseover the Live button while in a group to learn more about Live mode."] = "Posiziona il mouse sopra al pulsante Live mentre ti trovi in un gruppo per saperne di più sulla modalità Live."
+L["Mouseover a patrolling enemy with a blue border to view the patrol path."] =
+  "Posiziona il mouse sopra a un nemico di ronda con bordo blu per vederne il percorso di pattugliamento."
+L["Mouseover the Live button while in a group to learn more about Live mode."] =
+  "Posiziona il mouse sopra al pulsante Live mentre ti trovi in un gruppo per saperne di più sulla modalità Live."
 L["Move Object"] = "Muovi oggetto"
 L["Mueh'zala"] = "Mueh'zala"
 L["Murkbrine Fishmancer"] = "Pescomante Acquasporca"
@@ -2249,8 +2255,10 @@ L["plaguefallDevotedNote"] = "Plaguefall Devoted which have already been transfo
 L["plaguefallShortName"] = "PF"
 L["Plagueroc"] = "Grifalco della Piaga"
 L["Plain Texture"] = "Icona vuota"
-L["Players can join the live session by either clicking this button or the Live Session chat link"] = "I giocatori possono unirsi alla Sessione Live facendo clic su questo pulsante o sul link della Sessione Live situato nella chat"
-L["Please report any bugs on https://github.com/Nnoggie/MythicDungeonTools/issues"] = "Ti preghiamo di segnalare eventuali bug all'indirizzo: https://github.com/Nnoggie/MythicDungeonTools/issues"
+L["Players can join the live session by either clicking this button or the Live Session chat link"] =
+  "I giocatori possono unirsi alla Sessione Live facendo clic su questo pulsante o sul link della Sessione Live situato nella chat"
+L["Please report any bugs on https://github.com/adi-no95/MDT_Legion/issues"] =
+  "Ti preghiamo di segnalare eventuali bug all'indirizzo: https://github.com/adi-no95/MDT_Legion/issues"
 L["Plundering Geist"] = "Saccheggiatore Geist"
 --[[Translation missing --]]
 L["Poison"] = "Poison"
@@ -2491,7 +2499,7 @@ L["Rook Spinner"] = "Filatore Corvino"
 --[[Translation missing --]]
 L["rookeryShortname"] = "ROOK"
 --[[Translation missing --]]
-L["rookItemDescription"] = [=[After defeating |cFFFF0000Kyrioss|r loot |cFF00FF00Stormrook Feather|r 
+L["rookItemDescription"] = [=[After defeating |cFFFF0000Kyrioss|r loot |cFF00FF00Stormrook Feather|r
 Use it on a nearby |cFF00FF00Chained Stormrook|r to gain this buff for 5 minutes.]=]
 L["Root"] = "Radici"
 L["Rotation"] = "Rotazione"
@@ -2761,8 +2769,10 @@ L["siegeDuplicateNote"] = "Il gruppo G39 può essere duplicato se è presente un
 L["siegeGraveyardNote1"] = "Sbloccato dopo aver sconfitto il Sergente Bainbridge / Tagliatore Ganciorosso"
 L["siegeGraveyardNote2"] = "Sbloccato dopo aver sconfitto il Capitano del Terrore Serralegno"
 L["siegeGraveyardNote3"] = "Sbloccato dopo aver sconfitto Hadal Fondoscuro"
-L["siegeGutterNote2"] = "Gli Sbudellatori del gruppo G72 possono essere usati per riempire il contatore delle forze nemiche colpendoli e attivando l'uccisione istantanea dei Coscritti vicini."
-L["siegeGuttersNote"] = "Nota sugli Sbudellatori:%sI Coscritti uccidono istantaneamente gli Sbudellatori nel momento in cui un giocatore si avvicina a essi. Nel caso morissero senza aver subito alcun danno dai giocatori, non verranno aggiunti al contatore di forze nemiche."
+L["siegeGutterNote2"] =
+  "Gli Sbudellatori del gruppo G72 possono essere usati per riempire il contatore delle forze nemiche colpendoli e attivando l'uccisione istantanea dei Coscritti vicini."
+L["siegeGuttersNote"] =
+  "Nota sugli Sbudellatori:%sI Coscritti uccidono istantaneamente gli Sbudellatori nel momento in cui un giocatore si avvicina a essi. Nel caso morissero senza aver subito alcun danno dai giocatori, non verranno aggiunti al contatore di forze nemiche."
 L["Siegemaster Olugar"] = "Maestro d'Assedio Olugar"
 L["Siegemaster Rokra"] = "Maestro d'Assedio Rokra"
 --[[Translation missing --]]
@@ -3088,7 +3098,8 @@ L["tazaveshLowerShortName"] = "STRT"
 L["TazaveshUpper"] = "Tazavesh: So'leah's Gambit"
 --[[Translation missing --]]
 L["tazaveshUpperShortName"] = "GMBT"
-L["tdBuffGateNote"] = "Può contenere un alleato in grado di fornire un buff che dipende dalla sua razza:%sOrco/Nano: 10%% For/Agi%sNon Morto/Umano: 10%% Tempra%sTauren/Draenei: 1%% PS+Mana ogni 10s%sElfo del Sangue/Gnomo: 10%% Intelletto"
+L["tdBuffGateNote"] =
+  "Può contenere un alleato in grado di fornire un buff che dipende dalla sua razza:%sOrco/Nano: 10%% For/Agi%sNon Morto/Umano: 10%% Tempra%sTauren/Draenei: 1%% PS+Mana ogni 10s%sElfo del Sangue/Gnomo: 10%% Intelletto"
 L["tdGraveyardNote1"] = "Sbloccato dopo aver sconfitto La Regina delle Sabbie"
 L["tdGraveyardNote2"] = "Sbloccato dopo aver sconfitto Jes Ululis"
 L["tdGraveyardNote3"] = "Sbloccato dopo aver sconfitto il Capitano Cavaliere Valyri"
@@ -3105,7 +3116,8 @@ L["Temple of Sethraliss"] = "Tempio di Sethraliss"
 L["Temple of Sethraliss Sublevel"] = "Tempio di Sethraliss"
 --[[Translation missing --]]
 L["Temple of the Jade Serpent"] = "Temple of the Jade Serpent"
-L["templeEyeNote"] = "Occhio di Sethraliss%sTrasporta entrambi gli Occhi al Teschio di Sethraliss%sCiascuno degli Occhi trasportati al Teschio aggiunge 12 punti al contatore delle forze nemiche."
+L["templeEyeNote"] =
+  "Occhio di Sethraliss%sTrasporta entrambi gli Occhi al Teschio di Sethraliss%sCiascuno degli Occhi trasportati al Teschio aggiunge 12 punti al contatore delle forze nemiche."
 L["templeGraveyardNote1"] = "Sbloccato dopo aver sconfitto Merektha"
 L["templeGraveyardNote2"] = "Sbloccato dopo aver completato l'Evento del Teschio di Sethraliss"
 --[[Translation missing --]]
@@ -3196,7 +3208,8 @@ L["The Oculus"] = "The Oculus"
 --[[Translation missing --]]
 L["The Plague Quarter"] = "The Plague Quarter"
 L["The Platinum Pummeler"] = "Flagellatore Platinato"
-L["The preset will continuously synchronize between all party members participating in the Live Session"] = "Il percorso sarà sincronizzato continuamente tra tutti i membri del gruppo che partecipano alla Sessione Live."
+L["The preset will continuously synchronize between all party members participating in the Live Session"] =
+  "Il percorso sarà sincronizzato continuamente tra tutti i membri del gruppo che partecipano alla Sessione Live."
 --[[Translation missing --]]
 L["The Prison of Yogg-Saron"] = "The Prison of Yogg-Saron"
 L["The Prophet Tharon'ja"] = "Tharon'ja il Profeta"
@@ -3323,7 +3336,8 @@ L["Titanium Siegebreaker"] = "Spezzassedio di Titanio"
 L["Titanium Thunderer"] = "Tuonatore di Titanio"
 L["Titanium Vanguard"] = "Avanguardia di Titanio"
 L["T'lonja"] = "T'lonja"
-L["To share a different preset while the live session is active simply navigate to the preferred preset and click the new 'Set to Live' Button next to the preset-dropdown"] = "Per condividere un percorso diverso mentre la Sessione Live è attiva è sufficiente aprire il percorso desiderato e fare clic sul nuovo pulsante 'Attiva percorso' accanto al menu a tendina dei percorsi"
+L["To share a different preset while the live session is active simply navigate to the preferred preset and click the new 'Set to Live' Button next to the preset-dropdown"] =
+  "Per condividere un percorso diverso mentre la Sessione Live è attiva è sufficiente aprire il percorso desiderato e fare clic sul nuovo pulsante 'Attiva percorso' accanto al menu a tendina dei percorsi"
 L["tocNotes"] = "Strumento che permette di pianificare e ottimizzare le spedizioni Mitica+"
 --[[Translation missing --]]
 L["togc"] = "Trial of the Grand Crusader"
@@ -3747,10 +3761,14 @@ L["Ymirjar Witch Doctor"] = "Taumaturgo Ymirjar"
 L["Ymiron, the Fallen King"] = "Ymiron, il Re Caduto"
 L["Yogg-Saron"] = "Yogg-Saron"
 L["You are using MDT. You rock!"] = "Stai utilizzando MDT. Sei un mito!"
-L["You can always return to the current Live Session preset by clicking the 'Return to Live' button next to the preset-dropdown"] = "Puoi sempre tornare al percorso dell'attuale Sessione Live facendo clic sul pulsante 'Torna al percorso attivo' accanto al menu a tendina dei percorsi"
-L["You can choose from different color palettes in the automatic pull coloring settings menu."] = "Puoi scegliere fra diverse gamme di colori nel menu impostazioni della colorazione automatica dei pull."
-L["You can cycle through different floors by holding CTRL and using the mousewheel."] = "Puoi scorrere tra i vari piani di una spedizione tenendo premuto CTRL e usando la rotella di scorrimento del mouse."
-L["You can cycle through dungeons by holding ALT and using the mousewheel."] = "Puoi scorrere tra le varie spedizioni tenendo premuto ALT e usando la rotella di scorrimento del mouse."
+L["You can always return to the current Live Session preset by clicking the 'Return to Live' button next to the preset-dropdown"] =
+  "Puoi sempre tornare al percorso dell'attuale Sessione Live facendo clic sul pulsante 'Torna al percorso attivo' accanto al menu a tendina dei percorsi"
+L["You can choose from different color palettes in the automatic pull coloring settings menu."] =
+  "Puoi scegliere fra diverse gamme di colori nel menu impostazioni della colorazione automatica dei pull."
+L["You can cycle through different floors by holding CTRL and using the mousewheel."] =
+  "Puoi scorrere tra i vari piani di una spedizione tenendo premuto CTRL e usando la rotella di scorrimento del mouse."
+L["You can cycle through dungeons by holding ALT and using the mousewheel."] =
+  "Puoi scorrere tra le varie spedizioni tenendo premuto ALT e usando la rotella di scorrimento del mouse."
 L["Young Storm Dragon"] = "Drago della Tempesta Giovane"
 --[[Translation missing --]]
 L["Yu'lon"] = "Yu'lon"
@@ -3778,4 +3796,3 @@ L["Zul'gamux"] = "Zul'gamux"
 L["Zul'Gurub"] = "Zul'Gurub"
 L["Zuraal the Ascended"] = "Zuraal l'Asceso"
 L["Zuramat the Obliterator"] = "Zuramat il Disintegratore"
-

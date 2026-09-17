@@ -14,13 +14,13 @@ MDT.externalLinks = {
   {
     name = "GitHub",
     tooltip = L["Open an issue on GitHub"],
-    url = "https://github.com/Nnoggie/MythicDungeonTools/issues",
+    url = "https://github.com/adi-no95/MDT_Legion/issues",
     texture = { "Interface\\AddOns\\MythicDungeonTools\\Textures\\icons", 0.76, 1, 0.75, 1 },
   },
   {
     name = "Discord",
     tooltip = L["Provide feedback in Discord"],
-    url = "https://discord.gg/tdxMPb3",
+    url = "@adamo5734",
     texture = { "Interface\\AddOns\\MythicDungeonTools\\Textures\\icons", 0.5, 0.75, 0.75, 1 },
   },
   {
@@ -658,7 +658,7 @@ function MDT:IsFrameOffScreen()
 end
 
 local bottomTips = {
-  [1] = L["Please report any bugs on https://github.com/Nnoggie/MythicDungeonTools/issues"],
+  [1] = L["Please report any bugs on https://github.com/adi-no95/MDT_Legion/issues"],
   [2] = L["Hold CTRL to single-select enemies."],
   [3] = L["Hold SHIFT to create a new pull while selecting enemies."],
   [4] = L["Hold SHIFT to delete all presets with the delete preset button."],
@@ -1809,32 +1809,12 @@ end
 
 function MDT:IsCurrentPresetFortified()
   local currentWeek = self:GetCurrentPreset().week
-  local week = currentWeek and affixWeeks[currentWeek]
-  if not week then
-    return false
-  end
-  local hasFort = week[1] == 10 or week[2] == 10 or week[3] == 10 or week[4] == 10
-  if not hasFort then
-    return false
-  end
-  local db = self:GetDB()
-  local level = db and db.currentDifficulty or self:GetFortTyrAffixMinLevel()
-  return level >= self:GetFortTyrAffixMinLevel()
+  return affixWeeks[currentWeek][1] == 10 or affixWeeks[currentWeek][2] == 10 or affixWeeks[currentWeek][3] == 10 or affixWeeks[currentWeek][4] == 10
 end
 
 function MDT:IsCurrentPresetTyrannical()
   local currentWeek = self:GetCurrentPreset().week
-  local week = currentWeek and affixWeeks[currentWeek]
-  if not week then
-    return false
-  end
-  local hasTyr = week[1] == 9 or week[2] == 9 or week[3] == 9 or week[4] == 9
-  if not hasTyr then
-    return false
-  end
-  local db = self:GetDB()
-  local level = db and db.currentDifficulty or self:GetFortTyrAffixMinLevel()
-  return level >= self:GetFortTyrAffixMinLevel()
+  return affixWeeks[currentWeek][1] == 9 or affixWeeks[currentWeek][2] == 9 or affixWeeks[currentWeek][3] == 9 or affixWeeks[currentWeek][4] == 9
 end
 
 function MDT:MouseDownHook() end
