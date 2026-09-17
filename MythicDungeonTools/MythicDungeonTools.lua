@@ -322,6 +322,14 @@ local affixWeeks = {
   [10] = { 10, 13 },
 }
 
+---Keystone level at which Fortified / Tyrannical affect HP (Legion: +10; modern retail: +4).
+function MDT:GetFortTyrAffixMinLevel()
+  if self:IsLegion() then
+    return 10
+  end
+  return 4
+end
+
 MDT.mapInfo = {}
 MDT.dungeonTotalCount = {}
 MDT.scaleMultiplier = {}
@@ -1801,12 +1809,32 @@ end
 
 function MDT:IsCurrentPresetFortified()
   local currentWeek = self:GetCurrentPreset().week
-  return affixWeeks[currentWeek][1] == 10 or affixWeeks[currentWeek][2] == 10 or affixWeeks[currentWeek][3] == 10 or affixWeeks[currentWeek][4] == 10
+  local week = currentWeek and affixWeeks[currentWeek]
+  if not week then
+    return false
+  end
+  local hasFort = week[1] == 10 or week[2] == 10 or week[3] == 10 or week[4] == 10
+  if not hasFort then
+    return false
+  end
+  local db = self:GetDB()
+  local level = db and db.currentDifficulty or self:GetFortTyrAffixMinLevel()
+  return level >= self:GetFortTyrAffixMinLevel()
 end
 
 function MDT:IsCurrentPresetTyrannical()
   local currentWeek = self:GetCurrentPreset().week
-  return affixWeeks[currentWeek][1] == 9 or affixWeeks[currentWeek][2] == 9 or affixWeeks[currentWeek][3] == 9 or affixWeeks[currentWeek][4] == 9
+  local week = currentWeek and affixWeeks[currentWeek]
+  if not week then
+    return false
+  end
+  local hasTyr = week[1] == 9 or week[2] == 9 or week[3] == 9 or week[4] == 9
+  if not hasTyr then
+    return false
+  end
+  local db = self:GetDB()
+  local level = db and db.currentDifficulty or self:GetFortTyrAffixMinLevel()
+  return level >= self:GetFortTyrAffixMinLevel()
 end
 
 function MDT:MouseDownHook() end
@@ -2060,15 +2088,18 @@ local function round(number, decimals)
 end
 
 do
+  local isLegion = MDT.IsLegion and MDT:IsLegion()
+  -- Legion 7.0.3: +8% HP per keystone level; other affixes from +4/+7; Fort/Tyr HP only from +10.
+  -- Retail: +7% per level, Xalatath's Guile +10% from +11, Tyrannical +25%, Fortified/Tyrannical from +4.
   local fortMult = 1.2
-  local tyrMult = 1.25
-  local scalingNormal = 1.07
-  local scalingExtra = 1.1 -- Xalatath's Guile
-  local extraScalingLevel = 11
+  local tyrMult = isLegion and 1.4 or 1.25
+  local scalingNormal = isLegion and 1.08 or 1.07
+  local scalingExtra = isLegion and 1 or 1.1 -- Xalatath's Guile (not used in Legion)
+  local extraScalingLevel = isLegion and 1000 or 11
 
   local getFortTyrMult = function(level, boss, fortified, tyrannical, ignoreFortified)
     local mult = 1
-    if level >= 4 then
+    if level >= MDT:GetFortTyrAffixMinLevel() then
       if not boss and (fortified and not ignoreFortified) then
         mult = mult * fortMult
       end
@@ -2080,15 +2111,32 @@ do
   end
 
   local function getScaling(mult, level)
-    local scaling = mult * (scalingNormal ^ math.min(level - 1, extraScalingLevel - 2)) * (scalingExtra ^ math.max(0, level - extraScalingLevel + 1))
+    local scaling = mult * (scalingNormal ^ math.min(math.max(level - 1, 0), extraScalingLevel - 2)) * (scalingExtra ^ math.max(0, level - extraScalingLevel + 1))
     return round(scaling, 2) --not sure if this additional rounding is needed, but it was in the original code
   end
 
   function MDT:CalculateEnemyHealth(boss, baseHealth, level, ignoreFortified)
-    local fortified = true --fort and tyr are always present in 10 and above, we don't really care for lower levels
-    local tyrannical = true
-    local mult = 1
+    local fortified, tyrannical
+    if C_ChallengeMode.IsChallengeModeActive() then
+      local _, activeAffixIDs = C_ChallengeMode.GetActiveKeystoneInfo()
+      if type(activeAffixIDs) == "table" then
+        for _, affixID in pairs(activeAffixIDs) do
+          if affixID == 10 then
+            fortified = true
+          elseif affixID == 9 then
+            tyrannical = true
+          end
+        end
+      end
+    else
+      local preset = MDT:GetCurrentPreset()
+      if preset and preset.week and affixWeeks[preset.week] then
+        fortified = MDT:IsCurrentPresetFortified()
+        tyrannical = MDT:IsCurrentPresetTyrannical()
+      end
+    end
 
+    local mult = 1
     mult = getFortTyrMult(level, boss, fortified, tyrannical, ignoreFortified)
     mult = getScaling(mult, level)
 

@@ -4,7 +4,6 @@ local f
 local MDT = MDT
 
 -- CHANGE HERE TO DEFINE WHICH DUNGEONS TO TRACK FOR DATA COLLECTION
-local dungeonsToTrack = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 }
 local dungeonsToTrack = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 }
 
 MDT.DataCollection = {}
@@ -513,9 +512,11 @@ function DC:InitHealthTrack()
 	healthTrackingFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
 	healthTrackingFrame:SetScript("OnEvent", function(_, event, ...)
 		--check difficulty if challenge mode and m+ level
-		local difficultyID = GetDungeonDifficultyID()
-		local isChallenge = difficultyID and C_ChallengeMode.IsChallengeModeActive()
-		local level, activeAffixIDs = C_ChallengeMode.GetActiveKeystoneInfo()
+		local isChallenge = C_ChallengeMode.IsChallengeModeActive()
+		local level, activeAffixIDs
+		if C_ChallengeMode.GetActiveKeystoneInfo then
+			level, activeAffixIDs = C_ChallengeMode.GetActiveKeystoneInfo()
+		end
 		local fortified
 		local tyrannical
 		if type(activeAffixIDs) == "table" then
