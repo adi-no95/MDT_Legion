@@ -103,6 +103,13 @@ end
 
 local dungeonButtons = {}
 local BUTTON_SIZE = 40
+-- Later-patch dungeons sit on the right edge of the map.
+local dungeonSelectRightIndices = {
+  [2] = true, -- Cathedral of Eternal Night
+  [9] = true, -- Return to Karazhan Lower
+  [10] = true, -- Return to Karazhan Upper
+  [11] = true, -- Seat of the Triumvirate
+}
 
 function MDT:UpdateDungeonSelectHighlight()
   for _, button in ipairs(dungeonButtons) do
@@ -130,68 +137,82 @@ local formatTime = function(time)
   end
 end
 
-function MDT:UpdateDungeonDropDown()
-  local currentList = dungeonSelectionToIndex[db.selectedDungeonList]
-  for idx, dungeonIdx in ipairs(currentList) do
-    local button = dungeonButtons[idx]
-    if not button then
-      dungeonButtons[idx] = CreateFrame("Button", "MDTDungeonButton"..idx, MDT.main_frame)
-      button = dungeonButtons[idx]
-      button:SetSize(BUTTON_SIZE, BUTTON_SIZE)
-      button:ClearAllPoints()
-      button:SetPoint("TOPLEFT", MDT.main_frame, "TOPLEFT", (idx - 1) * (BUTTON_SIZE - 1), 0)
-      button.texture = button:CreateTexture()
-      button.texture:SetAllPoints(button)
-      button.texture:Show()
-      button.highlightTexture = button:CreateTexture()
-      button:SetHighlightTexture(button.highlightTexture)
-      button.highlightTexture:SetAtlas("bags-innerglow")
-      button.selectedTexture = button:CreateTexture()
-      button.selectedTexture:SetAllPoints(button)
-      button.selectedTexture:SetAtlas("bags-glow-artifact")
-      button.selectedTexture:SetDrawLayer("OVERLAY")
-      button.shortText = button:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-      button.shortText:SetPoint("BOTTOM", button, "BOTTOM", 0, 2)
-      button.shortText:SetFont(button.shortText:GetFont(), 9, "OUTLINE")
-      button.shortText:SetTextColor(1, 1, 1)
-      button:SetScript("OnLeave", function()
-        GameTooltip:Hide()
-      end)
-    end
-    local mapInfo = MDT.mapInfo[dungeonIdx]
-    button.dungeonIdx = dungeonIdx
-    button.texture:SetTexture(mapInfo.iconId or (mapInfo.teleportId and C_Spell.GetSpellTexture(mapInfo.teleportId)) or 134400)
-    button.shortText:SetText(mapInfo.shortName)
-    button:SetScript("OnClick", function(self, button)
-      MDT:UpdateToDungeon(dungeonIdx)
-      MDT:UpdateDungeonSelectHighlight()
-    end)
-    button:RegisterForClicks("AnyDown", "AnyUp")
-    button:Show()
-    button:SetFrameStrata("HIGH")
-    button:SetFrameLevel(50)
-    button:SetScript("OnEnter", function()
-      local timer
-      if mapInfo.mapID then
-        timer = select(3, C_ChallengeMode.GetMapUIInfo(mapInfo.mapID))
-        -- TODO: this is completely gone in S2
-        -- we want to always show the correct timer including the Challenger's Peril affix
-        -- add 90s if we are not currently in a key
-        -- local activeKeystoneLevel = select(1, C_ChallengeMode.GetActiveKeystoneInfo())
-        -- if timer and (not activeKeystoneLevel or activeKeystoneLevel < 7) then
-        --   timer = timer + 90
-        -- end
-      end
-      GameTooltip:SetOwner(dungeonButtons[idx], "ANCHOR_BOTTOMRIGHT", -dungeonButtons[idx]:GetWidth(), 0)
-      GameTooltip:AddLine(MDT.dungeonList[dungeonIdx], 1, 1, 1)
-      if timer then
-        GameTooltip:AddLine(L["Timer"]..": "..formatTime(timer), 1, 1, 1)
-      end
-      GameTooltip:Show()
+local function setupDungeonButton(idx, dungeonIdx, point, relativePoint, xOffset)
+  local button = dungeonButtons[idx]
+  if not button then
+    dungeonButtons[idx] = CreateFrame("Button", "MDTDungeonButton"..idx, MDT.main_frame)
+    button = dungeonButtons[idx]
+    button:SetSize(BUTTON_SIZE, BUTTON_SIZE)
+    button.texture = button:CreateTexture()
+    button.texture:SetAllPoints(button)
+    button.texture:Show()
+    button.highlightTexture = button:CreateTexture()
+    button:SetHighlightTexture(button.highlightTexture)
+    button.highlightTexture:SetAtlas("bags-innerglow")
+    button.selectedTexture = button:CreateTexture()
+    button.selectedTexture:SetAllPoints(button)
+    button.selectedTexture:SetAtlas("bags-glow-artifact")
+    button.selectedTexture:SetDrawLayer("OVERLAY")
+    button.shortText = button:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    button.shortText:SetPoint("BOTTOM", button, "BOTTOM", 0, 2)
+    button.shortText:SetFont(button.shortText:GetFont(), 9, "OUTLINE")
+    button.shortText:SetTextColor(1, 1, 1)
+    button:SetScript("OnLeave", function()
+      GameTooltip:Hide()
     end)
   end
+  button:ClearAllPoints()
+  button:SetPoint(point, MDT.main_frame, relativePoint, xOffset, 0)
+  local mapInfo = MDT.mapInfo[dungeonIdx]
+  button.dungeonIdx = dungeonIdx
+  button.texture:SetTexture(mapInfo.iconId or (mapInfo.teleportId and C_Spell.GetSpellTexture(mapInfo.teleportId)) or 134400)
+  button.shortText:SetText(mapInfo.shortName)
+  button:SetScript("OnClick", function()
+    MDT:UpdateToDungeon(dungeonIdx)
+    MDT:UpdateDungeonSelectHighlight()
+  end)
+  button:RegisterForClicks("AnyDown", "AnyUp")
+  button:Show()
+  button:SetFrameStrata("HIGH")
+  button:SetFrameLevel(50)
+  button:SetScript("OnEnter", function()
+    local timer
+    if mapInfo.mapID then
+      timer = select(3, C_ChallengeMode.GetMapUIInfo(mapInfo.mapID))
+    end
+    GameTooltip:SetOwner(button, "ANCHOR_BOTTOMRIGHT", -button:GetWidth(), 0)
+    GameTooltip:AddLine(MDT.dungeonList[dungeonIdx], 1, 1, 1)
+    if timer then
+      GameTooltip:AddLine(L["Timer"]..": "..formatTime(timer), 1, 1, 1)
+    end
+    GameTooltip:Show()
+  end)
+end
+
+function MDT:UpdateDungeonDropDown()
+  local currentList = dungeonSelectionToIndex[db.selectedDungeonList]
+  local leftList, rightList = {}, {}
+  for _, dungeonIdx in ipairs(currentList) do
+    if dungeonSelectRightIndices[dungeonIdx] then
+      tinsert(rightList, dungeonIdx)
+    else
+      tinsert(leftList, dungeonIdx)
+    end
+  end
+
+  local slot = 0
+  for i, dungeonIdx in ipairs(leftList) do
+    slot = slot + 1
+    setupDungeonButton(slot, dungeonIdx, "TOPLEFT", "TOPLEFT", (i - 1) * (BUTTON_SIZE - 1))
+  end
+  for i, dungeonIdx in ipairs(rightList) do
+    slot = slot + 1
+    local fromRight = #rightList - i
+    setupDungeonButton(slot, dungeonIdx, "TOPRIGHT", "TOPRIGHT", -fromRight * (BUTTON_SIZE - 1))
+  end
+
   MDT:UpdateDungeonSelectHighlight()
-  for idx = #currentList + 1, #dungeonButtons do
+  for idx = slot + 1, #dungeonButtons do
     dungeonButtons[idx]:Hide()
   end
 
