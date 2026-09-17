@@ -28,31 +28,34 @@ function MDT:AddNPCFromUnit(unit)
     npcId = select(6, strsplit("-", guid))
     npcId = tonumber(npcId)
   end
-  local added
+  if not npcId then
+    print("MDT: Create from Target needs a valid target.")
+    return
+  end
+  MDT.dungeonEnemies[db.currentDungeonIdx] = MDT.dungeonEnemies[db.currentDungeonIdx] or {}
+  local existing
   for _, npcData in pairs(MDT.dungeonEnemies[db.currentDungeonIdx]) do
     if npcData.id == npcId then
-      added = true; break
+      existing = npcData
+      break
     end
   end
-  if npcId and not added then
-    local npcName = UnitName(unit)
-    local npcHealth = UnitHealthMax(unit)
-    local npcLevel = UnitLevel(unit)
-    local npcCreatureType = UnitCreatureType(unit)
-    local npcScale = 1
-    local npcCount = 0
+  if not existing then
     tinsert(MDT.dungeonEnemies[db.currentDungeonIdx], {
-      name = npcName,
-      health = npcHealth,
-      level = npcLevel,
-      creatureType = npcCreatureType,
+      name = UnitName(unit),
+      health = UnitHealthMax(unit),
+      level = UnitLevel(unit),
+      creatureType = UnitCreatureType(unit),
       id = npcId,
-      scale = npcScale,
-      count = npcCount,
+      scale = 1,
+      count = 0,
       clones = {},
     })
-    return npcId
+    print("MDT: Added NPC "..(UnitName(unit) or "").." id: "..npcId)
+  else
+    print("MDT: NPC already exists: "..(existing.name or npcId))
   end
+  return npcId
 end
 
 local currentEnemyIdx
@@ -360,6 +363,10 @@ function MDT:CreateDevPanel(frame)
       editBoxes[2]:SetText(health)
       editBoxes[3]:SetText(level)
       editBoxes[4]:SetText(creatureType)
+      if editBoxes[5] then
+        local data = idx and MDT.dungeonEnemies[db.currentDungeonIdx][idx]
+        editBoxes[5]:SetText(data and data.displayId or "")
+      end
       scaleSlider:SetValue(scale)
       countSlider:SetValue(count)
     end
@@ -512,6 +519,7 @@ function MDT:CreateDevPanel(frame)
       [2] = "health",
       [3] = "level",
       [4] = "creatureType",
+      [5] = "displayId",
     }
     for idx, name in ipairs(fields) do
       editBoxes[idx] = AceGUI:Create("EditBox")
@@ -579,6 +587,9 @@ function MDT:CreateDevPanel(frame)
           data.instanceID = 0
         end
         data.encounterID = encounterID
+        if displayInfo and displayInfo > 0 then
+          data.displayId = displayInfo
+        end
         --use this data as follows:
         --if (not EncounterJournal) then LoadAddOn('Blizzard_EncounterJournal') end
         --EncounterJournal_OpenJournal(23,data.instanceID,data.encounterID)
