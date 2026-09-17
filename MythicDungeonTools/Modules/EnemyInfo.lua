@@ -21,9 +21,11 @@ local function CreateDispatcher(argCount)
     ]]
 
   local ARGS = {}
-  for i = 1, argCount do ARGS[i] = "arg"..i end
+  for i = 1, argCount do
+    ARGS[i] = "arg" .. i
+  end
   code = code:gsub("ARGS", tconcat(ARGS, ", "))
-  return assert(loadstring(code, "safecall Dispatcher["..argCount.."]"))(xpcall, errorhandler)
+  return assert(loadstring(code, "safecall Dispatcher[" .. argCount .. "]"))(xpcall, errorhandler)
 end
 
 local Dispatchers = setmetatable({}, {
@@ -31,7 +33,7 @@ local Dispatchers = setmetatable({}, {
     local dispatcher = CreateDispatcher(argCount)
     rawset(self, argCount, dispatcher)
     return dispatcher
-  end
+  end,
 })
 Dispatchers[0] = function(func)
   return xpcall(func, errorhandler)
@@ -94,26 +96,22 @@ local function MakeEnemeyInfoFrame()
   function f.frame:StartMoving() end
 
   f:SetLayout("Fill")
-  f:SetCallback("OnClose", function(widget)
-
-  end)
+  f:SetCallback("OnClose", function(widget) end)
   f.frame:ClearAllPoints()
   f.frame:SetAllPoints(MDTScrollFrame)
 
   local originalHide = MDT.main_frame.Hide
   function MDT.main_frame:Hide(...)
     f.frame:Hide()
-    return originalHide(self, ...);
+    return originalHide(self, ...)
   end
 
   f.tabGroup = AceGUI:Create("TabGroup")
   local tabGroup = f.tabGroup
-  tabGroup:SetTabs(
-    {
-      { text = L["Enemy Info"], value = "tab1" },
-      --{text="Damage Calc", value="tab2"},
-    }
-  )
+  tabGroup:SetTabs({
+    { text = L["Enemy Info"], value = "tab1" },
+    --{text="Damage Calc", value="tab2"},
+  })
   tabGroup:SetLayout("ThreeColums")
   f:AddChild(tabGroup)
 
@@ -271,7 +269,6 @@ local function MakeEnemeyInfoFrame()
     end)
     f.enemyDataContainer:AddChild(f.enemyDataContainer.stealthDetectCheckBox)
 
-
     midContainer:AddChild(f.enemyDataContainer)
 
     ---RIGHT
@@ -346,14 +343,18 @@ local function MakeEnemeyInfoFrame()
     sendSpellsButton:SetText(L["Link Spells"])
     sendSpellsButton:SetWidth(buttonWidth)
     sendSpellsButton:SetCallback("OnClick", function()
-      if #f.spellScroll.children < 1 then return end
+      if #f.spellScroll.children < 1 then
+        return
+      end
       local distribution = (UnitInRaid("player") and "RAID") or (IsInGroup() and "PARTY")
-      if not distribution then return end
+      if not distribution then
+        return
+      end
       local enemyName = f.enemyDropDown.text:GetText()
       SendChatMessage(string.format(L["MDT: Spells for %s:"], enemyName), distribution)
       for i, child in pairs(f.spellScroll.children) do
         local link = C_Spell.GetSpellLink(child.spellId)
-        SendChatMessage(i..". "..link, distribution)
+        SendChatMessage(i .. ". " .. link, distribution)
       end
     end)
     spellButtonsContainer:AddChild(sendSpellsButton)
@@ -363,16 +364,13 @@ local function MakeEnemeyInfoFrame()
     rightContainer:AddChild(powerScrollContainer)
     rightContainer:AddChild(spellButtonsContainer)
 
-
     container:AddChild(leftContainer)
     container:AddChild(midContainer)
     container:AddChild(rightContainer)
   end
 
   --Damage Calc
-  local function DrawGroup2(container)
-
-  end
+  local function DrawGroup2(container) end
 
   -- Callback function for OnGroupSelected
   local function SelectGroup(container, event, group)
@@ -422,28 +420,28 @@ local spellBlacklist = {
   [277247] = true, --Regenerative Blood
   [209859] = true, --Bolster
   [233490] = true, --UA
-  [91021]  = true, --Find Weakness
-  [2094]   = true, --Blind
+  [91021] = true, --Find Weakness
+  [2094] = true, --Blind
   [273836] = true, --Filthy Transfusion
   [205708] = true, --Chilled
   [212792] = true, --Cone of Cold
-  [48181]  = true, --Haunt
+  [48181] = true, --Haunt
   [191380] = true, --Mark of the Distant Army
   [236299] = true, --Chrono Shift
-  [1490]   = true, --Chaos Brand
+  [1490] = true, --Chaos Brand
   [205276] = true, --Phantom Singularity
   [132951] = true, --Flare
   [255228] = true, --Polymorphed
-  [122]    = true, --Frost Nova
-  [12654]  = true, --Ignite
-  [2818]   = true, --Deadly Poison
-  [55095]  = true, --Frost Fever
-  [408]    = true, --Kidney Shot
-  [34914]  = true, --Vampiric Touch
+  [122] = true, --Frost Nova
+  [12654] = true, --Ignite
+  [2818] = true, --Deadly Poison
+  [55095] = true, --Frost Fever
+  [408] = true, --Kidney Shot
+  [34914] = true, --Vampiric Touch
   [205369] = true, --Mind Bomb
   [154953] = true, --Internal Bleeding
-  [51490]  = true, --Thunderstorm
-  [3409]   = true, --Crippling Poison
+  [51490] = true, --Thunderstorm
+  [3409] = true, --Crippling Poison
   [272970] = true, --Packed Ice
   [262115] = true, --Deep Wounds
   [226943] = true, --Mind Bomb
@@ -453,8 +451,8 @@ local spellBlacklist = {
   [186439] = true, --Shadow Mend
   [113746] = true, --Mystic Touch
   [280404] = true, --Tidal Surge
-  [589]    = true, --Shadow Word: Pain
-  [5116]   = true, --Concussive Shot
+  [589] = true, --Shadow Word: Pain
+  [5116] = true, --Concussive Shot
   [288865] = true, --Meerahs Jukebox
   [317898] = true, --Blinding Sleet
   [334882] = true, --
@@ -466,9 +464,9 @@ local spellBlacklist = {
   [344991] = true, --
   [320785] = true, --
   [335072] = true, --
-  [1604]   = true, --
-  [35079]  = true, --
-  [50707]  = true, --
+  [1604] = true, --
+  [35079] = true, --
+  [50707] = true, --
   [240443] = true, --
   [328506] = true, --
   [344663] = true, -- shattered psyche
@@ -501,15 +499,23 @@ function MDT:GetEnemyInfoSpellBlacklist()
 end
 
 function MDT:UpdateEnemyInfoFrame(enemyIdx)
-  if not enemyIdx then enemyIdx = lastEnemyIdx end
+  if not enemyIdx then
+    enemyIdx = lastEnemyIdx
+  end
   lastEnemyIdx = enemyIdx
-  if not enemyIdx then return end
+  if not enemyIdx then
+    return
+  end
   local data = MDT.dungeonEnemies[db.currentDungeonIdx][enemyIdx]
-  if not data then return end
+  if not data then
+    return
+  end
   local f = MDT.EnemyInfoFrame
   f:SetTitle(L[data.name])
   f.model:SetDisplayInfo(data.displayId or 39490)
-  if f.model.ResetModel then f.model:ResetModel() end
+  if f.model.ResetModel then
+    f.model:ResetModel()
+  end
   f.model:SetPosition(0, 0, 0)
 
   local container = f.tabGroup
@@ -622,8 +628,12 @@ end
 
 function MDT:UpdateEnemyInfoData(enemyIdx)
   local f = MDT.EnemyInfoFrame
-  if not enemyIdx then enemyIdx = lastEnemyIdx end
-  if not enemyIdx then return end
+  if not enemyIdx then
+    enemyIdx = lastEnemyIdx
+  end
+  if not enemyIdx then
+    return
+  end
   local data = MDT.dungeonEnemies[db.currentDungeonIdx][enemyIdx]
   --data
   f.enemyDataContainer.nameEditBox:SetText(L[data.name])
