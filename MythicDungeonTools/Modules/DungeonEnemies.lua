@@ -385,14 +385,16 @@ function MDT:DisplayBlipTooltip(blip, shown)
   local group = blip.clone.g and " "..string.format(L["(G %d)"], blip.clone.g) or ""
   local occurence = (blip.data.isBoss and "") or blip.cloneIdx
 
-  if not L[data.name] then print("MDT: Could not find localization for "..data.name) end
-  local text = L[data.name]..
+  if not L[data.name] then print("MDT: Could not find localization for "..tostring(data.name)) end
+  local name = L[data.name] or data.name or "Unknown"
+  local creatureType = L[data.creatureType] or data.creatureType or ""
+  local text = name..
       " "..
       occurence..
       group..
       "\n"..
-      string.format(L["Level %d %s"], data.level, L[data.creatureType]).." "..data.id..
-      "\n"..string.format(L["%s HP"], MDT:FormatEnemyHealth(health)).."\n"
+      string.format(L["Level %d %s"] or "Level %d %s", data.level or 0, creatureType).." "..(data.id or "")..
+      "\n"..string.format(L["%s HP"] or "%s HP", MDT:FormatEnemyHealth(health) or "0").."\n"
 
   if db.devMode then
     text = L["devModeShiftDragHint"].."\n"..L["devModeCtrlDragHint"].."\n\n"..text

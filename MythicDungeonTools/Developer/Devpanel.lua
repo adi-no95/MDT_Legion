@@ -571,7 +571,13 @@ function MDT:CreateDevPanel(frame)
         local data = MDT.dungeonEnemies[db.currentDungeonIdx][currentBlip.enemyIdx]
         data.isBoss = true
         local mapID = C_Map.GetBestMapForUnit("player")
-        data.instanceID = mapID and EJ_GetInstanceForMap(mapID) or 0
+        if EJ_GetInstanceForMap then
+          data.instanceID = mapID and EJ_GetInstanceForMap(mapID) or 0
+        elseif EJ_GetCurrentInstance then
+          data.instanceID = EJ_GetCurrentInstance() or 0
+        else
+          data.instanceID = 0
+        end
         data.encounterID = encounterID
         --use this data as follows:
         --if (not EncounterJournal) then LoadAddOn('Blizzard_EncounterJournal') end
