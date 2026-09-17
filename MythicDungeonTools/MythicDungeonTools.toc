@@ -15,7 +15,8 @@
 ## Notes-koKR: Tool for planning and optimizing Mythic+ dungeon runs
 ## Notes-zhCN: 规划和优化大秘境地下城运行的工具
 ## Notes-zhTW: 幫助你計算 M+ 的小怪%，規劃出最佳拉怪路線。
-## OptionalDeps: !!AddonLocale, LibStub, Ace3, WagoAnalytics
+## RequiredDeps: MDT_Legacy
+## OptionalDeps: !!AddonLocale, LibStub, Ace3, WagoAnalytics, WeakAurasLegionCompat
 ## SavedVariables: MythicDungeonToolsDB
 ## IconTexture: Interface\AddOns\MythicDungeonTools\Textures\MDTFull
 

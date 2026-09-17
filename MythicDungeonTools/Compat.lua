@@ -1,6 +1,17 @@
 -- API compatibility shims for WoW 7.3.5 (Legion)
 local _, MDT = ...
 
+-- WeakAurasLegionCompat owns the complete C_AddOns/C_Spell/C_Map shims. If MDT
+-- installs incomplete stubs first, WeakAuras skips its copies and errors
+-- (C_AddOns.EnableAddOn is nil, Init.lua never defines WeakAuras.IsLibsOK).
+if not IsAddOnLoaded("WeakAurasLegionCompat") then
+	local _, _, _, compatEnabled = GetAddOnInfo("WeakAurasLegionCompat")
+	local _, _, _, waEnabled = GetAddOnInfo("WeakAuras")
+	if compatEnabled or waEnabled then
+		LoadAddOn("WeakAurasLegionCompat")
+	end
+end
+
 if not Mixin then
 	function Mixin(object, mixin)
 		for key, value in pairs(mixin) do
@@ -13,27 +24,44 @@ if not BackdropTemplateMixin then
 	BackdropTemplateMixin = {}
 end
 
-function BackdropTemplateMixin:SetBackdrop(backdrop)
-	if self.SetBackdrop then
-		self:SetBackdrop(backdrop)
-	end
-end
+-- Only fill missing mixin methods. WeakAurasLegionCompat ships a full BackdropTemplateMixin
+-- and overwriting it makes WeakAuras frames recurse or lose nine-slice backdrops.
+do
+	local nativeFrame = CreateFrame("Frame")
+	local nativeSetBackdrop = nativeFrame.SetBackdrop
+	local nativeSetBackdropColor = nativeFrame.SetBackdropColor
+	local nativeSetBackdropBorderColor = nativeFrame.SetBackdropBorderColor
 
-function BackdropTemplateMixin:SetBackdropColor(r, g, b, a)
-	if self.SetBackdropColor then
-		self:SetBackdropColor(r, g, b, a)
+	if not BackdropTemplateMixin.SetBackdrop then
+		function BackdropTemplateMixin:SetBackdrop(backdrop)
+			if nativeSetBackdrop then
+				nativeSetBackdrop(self, backdrop)
+			end
+		end
 	end
-end
 
-function BackdropTemplateMixin:SetBackdropBorderColor(r, g, b, a)
-	if self.SetBackdropBorderColor then
-		self:SetBackdropBorderColor(r, g, b, a)
+	if not BackdropTemplateMixin.SetBackdropColor then
+		function BackdropTemplateMixin:SetBackdropColor(r, g, b, a)
+			if nativeSetBackdropColor then
+				nativeSetBackdropColor(self, r, g, b, a)
+			end
+		end
 	end
-end
 
-function BackdropTemplateMixin:ClearBackdrop()
-	if self.SetBackdrop then
-		self:SetBackdrop(nil)
+	if not BackdropTemplateMixin.SetBackdropBorderColor then
+		function BackdropTemplateMixin:SetBackdropBorderColor(r, g, b, a)
+			if nativeSetBackdropBorderColor then
+				nativeSetBackdropBorderColor(self, r, g, b, a)
+			end
+		end
+	end
+
+	if not BackdropTemplateMixin.ClearBackdrop then
+		function BackdropTemplateMixin:ClearBackdrop()
+			if nativeSetBackdrop then
+				nativeSetBackdrop(self, nil)
+			end
+		end
 	end
 end
 
@@ -531,33 +559,75 @@ function MDT.GetCustomMapTilePath(basePath, sublevel, fileSuffix)
 	return basePath .. "\\" .. sublevel .. "_" .. fileSuffix .. ext
 end
 
-if C_AddOns then
-	return
-end
+C_AddOns = C_AddOns or {}
 
-C_AddOns = {}
-
-function C_AddOns.GetAddOnMetadata(nameOrIndex, field)
-	if type(nameOrIndex) == "number" then
-		nameOrIndex = select(1, GetAddOnInfo(nameOrIndex))
+if not C_AddOns.GetAddOnMetadata then
+	function C_AddOns.GetAddOnMetadata(nameOrIndex, field)
+		if type(nameOrIndex) == "number" then
+			nameOrIndex = select(1, GetAddOnInfo(nameOrIndex))
+		end
+		return GetAddOnMetadata(nameOrIndex, field)
 	end
-	return GetAddOnMetadata(nameOrIndex, field)
+else
+	local origGetAddOnMetadata = C_AddOns.GetAddOnMetadata
+	function C_AddOns.GetAddOnMetadata(nameOrIndex, field)
+		if type(nameOrIndex) == "number" then
+			nameOrIndex = select(1, GetAddOnInfo(nameOrIndex))
+		end
+		return origGetAddOnMetadata(nameOrIndex, field)
+	end
 end
 
-function C_AddOns.GetNumAddOns()
-	return GetNumAddOns()
+if not C_AddOns.GetNumAddOns then
+	C_AddOns.GetNumAddOns = GetNumAddOns
 end
 
-function C_AddOns.GetAddOnInfo(index)
-	return GetAddOnInfo(index)
+if not C_AddOns.GetAddOnInfo then
+	C_AddOns.GetAddOnInfo = GetAddOnInfo
 end
 
-function C_AddOns.IsAddOnLoaded(nameOrIndex)
-	return IsAddOnLoaded(nameOrIndex)
+if not C_AddOns.IsAddOnLoaded then
+	C_AddOns.IsAddOnLoaded = IsAddOnLoaded
 end
 
-function C_AddOns.LoadAddOn(name)
-	return LoadAddOn(name)
+if not C_AddOns.LoadAddOn then
+	C_AddOns.LoadAddOn = LoadAddOn
+end
+
+if not C_AddOns.EnableAddOn then
+	C_AddOns.EnableAddOn = EnableAddOn
+end
+
+if not C_AddOns.DisableAddOn then
+	C_AddOns.DisableAddOn = DisableAddOn
+end
+
+if not C_AddOns.EnableAllAddOns then
+	C_AddOns.EnableAllAddOns = EnableAllAddOns
+end
+
+if not C_AddOns.DisableAllAddOns then
+	C_AddOns.DisableAllAddOns = DisableAllAddOns
+end
+
+if not C_AddOns.DoesAddOnExist then
+	C_AddOns.DoesAddOnExist = DoesAddOnExist
+end
+
+if not C_AddOns.GetAddOnDependencies then
+	C_AddOns.GetAddOnDependencies = GetAddOnDependencies
+end
+
+if not C_AddOns.GetAddOnOptionalDependencies then
+	C_AddOns.GetAddOnOptionalDependencies = GetAddOnOptionalDependencies
+end
+
+if not C_AddOns.IsAddOnLoadOnDemand then
+	C_AddOns.IsAddOnLoadOnDemand = IsAddOnLoadOnDemand
+end
+
+if not C_AddOns.IsAddOnLoadable then
+	C_AddOns.IsAddOnLoadable = IsAddOnLoadable
 end
 
 if not C_Spell then
@@ -722,9 +792,14 @@ do
 
 	local testFrame = CreateFrame("Frame")
 	if not testFrame.SetResizeBounds then
+		-- Retail max size is optional. WeakAuras calls SetResizeBounds(minW, minH) only.
 		shims.SetResizeBounds = function(self, minWidth, minHeight, maxWidth, maxHeight)
-			self:SetMinResize(minWidth, minHeight)
-			self:SetMaxResize(maxWidth, maxHeight)
+			if minWidth and minHeight then
+				self:SetMinResize(minWidth, minHeight)
+			end
+			if maxWidth and maxHeight then
+				self:SetMaxResize(maxWidth, maxHeight)
+			end
 		end
 	end
 
