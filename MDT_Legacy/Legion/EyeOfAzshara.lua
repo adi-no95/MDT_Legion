@@ -183,6 +183,7 @@ MDT.dungeonEnemies[dungeonIndex] = {
       [3] = {
         ["x"] = 436.64439311646,
         ["y"] = -425.78237417136,
+        ["teeming"] = true,
         ["sublevel"] = 1,
         ["patrol"] = {
           [1] = {
@@ -376,6 +377,7 @@ MDT.dungeonEnemies[dungeonIndex] = {
       [5] = {
         ["x"] = 408.42002645525,
         ["y"] = -470.45451312763,
+        ["teeming"] = true,
         ["g"] = 1,
         ["sublevel"] = 1,
       },
@@ -547,18 +549,21 @@ MDT.dungeonEnemies[dungeonIndex] = {
       [6] = {
         ["x"] = 418.81767521829,
         ["y"] = -464.64198782103,
+        ["teeming"] = true,
         ["g"] = 2,
         ["sublevel"] = 1,
       },
       [7] = {
         ["x"] = 395.94487785661,
         ["y"] = -457.27253025789,
+        ["teeming"] = true,
         ["g"] = 3,
         ["sublevel"] = 1,
       },
       [8] = {
         ["x"] = 439.90785451767,
         ["y"] = -402.15089441892,
+        ["teeming"] = true,
         ["g"] = 7,
         ["sublevel"] = 1,
       },
@@ -894,21 +899,25 @@ MDT.dungeonEnemies[dungeonIndex] = {
       [6] = {
         ["x"] = 368.57923501715,
         ["y"] = -238.36773097118,
+        ["teeming"] = true,
         ["sublevel"] = 1,
       },
       [7] = {
         ["x"] = 302.40423124727,
         ["y"] = -290.12818408386,
+        ["teeming"] = true,
         ["sublevel"] = 1,
       },
       [8] = {
         ["x"] = 317.7972667033,
         ["y"] = -329.36204016187,
+        ["teeming"] = true,
         ["sublevel"] = 1,
       },
       [9] = {
         ["x"] = 369.98905879438,
         ["y"] = -386.13280475852,
+        ["teeming"] = true,
         ["sublevel"] = 1,
       },
     },
@@ -1923,6 +1932,7 @@ MDT.dungeonEnemies[dungeonIndex] = {
       [4] = {
         ["x"] = 455.60312097466,
         ["y"] = -212.4607750456,
+        ["teeming"] = true,
         ["sublevel"] = 1,
         ["patrol"] = {
           [1] = {
@@ -2129,12 +2139,14 @@ MDT.dungeonEnemies[dungeonIndex] = {
       [7] = {
         ["x"] = 558.07256260101,
         ["y"] = -414.09041233876,
+        ["teeming"] = true,
         ["g"] = 50,
         ["sublevel"] = 1,
       },
       [8] = {
         ["x"] = 555.9164636036,
         ["y"] = -174.50247541317,
+        ["teeming"] = true,
         ["g"] = 65,
         ["sublevel"] = 1,
       },

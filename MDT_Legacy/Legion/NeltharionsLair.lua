@@ -232,6 +232,7 @@ MDT.dungeonEnemies[dungeonIndex] = {
       [2] = {
         ["x"] = 701.63511264472,
         ["y"] = -255.72748015891,
+        ["teeming"] = true,
         ["g"] = 1,
         ["sublevel"] = 1,
       },
@@ -490,6 +491,7 @@ MDT.dungeonEnemies[dungeonIndex] = {
       [4] = {
         ["x"] = 631.15466291215,
         ["y"] = -230.15963713959,
+        ["teeming"] = true,
         ["g"] = 5,
         ["sublevel"] = 1,
       },
@@ -650,6 +652,7 @@ MDT.dungeonEnemies[dungeonIndex] = {
       [14] = {
         ["x"] = 361.19229743848,
         ["y"] = -298.58259078741,
+        ["teeming"] = true,
         ["g"] = 15,
         ["sublevel"] = 1,
       },
@@ -734,18 +737,21 @@ MDT.dungeonEnemies[dungeonIndex] = {
       [10] = {
         ["x"] = 422.88744304888,
         ["y"] = -378.5110802941,
+        ["teeming"] = true,
         ["g"] = 10,
         ["sublevel"] = 1,
       },
       [11] = {
         ["x"] = 409.25105402897,
         ["y"] = -376.69289379098,
+        ["teeming"] = true,
         ["g"] = 10,
         ["sublevel"] = 1,
       },
       [12] = {
         ["x"] = 398.22331186957,
         ["y"] = -227.78085937953,
+        ["teeming"] = true,
         ["g"] = 17,
         ["sublevel"] = 1,
       },
@@ -942,6 +948,7 @@ MDT.dungeonEnemies[dungeonIndex] = {
       [8] = {
         ["x"] = 390.95060487104,
         ["y"] = -219.59906888293,
+        ["teeming"] = true,
         ["g"] = 17,
         ["sublevel"] = 1,
       },
@@ -1021,6 +1028,7 @@ MDT.dungeonEnemies[dungeonIndex] = {
       [4] = {
         ["x"] = 333.71374331304,
         ["y"] = -177.63476347591,
+        ["teeming"] = true,
         ["g"] = 24,
         ["sublevel"] = 1,
       },
@@ -1125,12 +1133,14 @@ MDT.dungeonEnemies[dungeonIndex] = {
       [2] = {
         ["x"] = 161.81671847885,
         ["y"] = -314.94177286,
+        ["teeming"] = true,
         ["g"] = 34,
         ["sublevel"] = 1,
       },
       [3] = {
         ["x"] = 154.0894599778,
         ["y"] = -308.57814935954,
+        ["teeming"] = true,
         ["g"] = 34,
         ["sublevel"] = 1,
       },
