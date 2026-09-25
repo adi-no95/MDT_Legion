@@ -405,6 +405,10 @@ local schemas = {
                 type = "number"
               },
               {
+                name = "teeming",
+                type = "boolean"
+              },
+              {
                 name = "scale",
                 type = "number"
               },
